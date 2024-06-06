@@ -1,17 +1,5 @@
-# ローカルのZIPファイルを作成
-resource "null_resource" "create_lambda_zip" {
-  provisioner "local-exec" {
-    command = "zip lambda_function.zip lambda.js"
-    working_dir = "."
-  }
-
-  depends_on = [
-    data.local_file.lambda_js
-  ]
-}
-
-data "local_file" "lambda_js" {
-  filename = "./lambda.js"
+data "local_file" "lambda_zip" {
+  filename = "./lambda.zip"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -43,7 +31,7 @@ resource "aws_lambda_function" "hello_lambda" {
   source_code_hash = filebase64sha256("./lambda_function.zip")
 
   # ZIPファイルが変更された場合にデプロイメントをトリガー
-  depends_on = [null_resource.create_lambda_zip]
+  depends_on = [data.local_file.lambda_zip]
 }
 
 output "lambda_function_arn" {
