@@ -4,10 +4,6 @@ resource "null_resource" "create_lambda_zip" {
     command = "zip lambda_function.zip lamda.js"
     working_dir = "."
   }
-
-  depends_on = [
-    local_file.lambda_js
-  ]
 }
 
 data "aws_iam_policy_document" "assume_role" {
