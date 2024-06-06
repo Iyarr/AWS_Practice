@@ -30,7 +30,7 @@ resource "aws_lambda_function" "hello_lambda" {
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
 
-  source_code_hash = filebase64sha256("./lambda.zip")
+  source_code_hash = filebase64sha256(data.archive_file.lambda_zip.output_path)
 
   # ZIPファイルが変更された場合にデプロイメントをトリガー
   depends_on = [data.archive_file.lambda_zip]
