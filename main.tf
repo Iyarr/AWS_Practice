@@ -1,5 +1,7 @@
-data "local_file" "lambda_zip" {
-  filename = "./lambda.zip"
+data "archive_file" "lamda_zip" {
+  type        = "zip"
+  source_file = "./lamda.js"
+  output_path = "./lambda.zip"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -26,12 +28,12 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = "main.handler"
   runtime          = "nodejs20.x"
-  filename         = "lambda_function.zip"
+  filename         = "lambda.zip"
 
-  source_code_hash = filebase64sha256("./lambda_function.zip")
+  source_code_hash = filebase64sha256("./lambda.zip")
 
   # ZIPファイルが変更された場合にデプロイメントをトリガー
-  depends_on = [data.local_file.lambda_zip]
+  depends_on = [data.archive_file.lamda_zip]
 }
 
 output "lambda_function_arn" {
