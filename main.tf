@@ -6,7 +6,7 @@ resource "null_resource" "create_lambda_zip" {
   }
 
   depends_on = [
-    local_file.lambda_js
+    data.local_file.lambda_js
   ]
 }
 
