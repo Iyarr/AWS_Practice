@@ -1,6 +1,6 @@
-data "archive_file" "lamda_zip" {
+data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "./lamda.js"
+  source_file = "./lambda.js"
   output_path = "./lambda.zip"
 }
 
@@ -33,7 +33,7 @@ resource "aws_lambda_function" "hello_lambda" {
   source_code_hash = filebase64sha256("./lambda.zip")
 
   # ZIPファイルが変更された場合にデプロイメントをトリガー
-  depends_on = [data.archive_file.lamda_zip]
+  depends_on = [data.archive_file.lambda_zip]
 }
 
 output "lambda_function_arn" {
