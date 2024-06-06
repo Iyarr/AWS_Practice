@@ -1,7 +1,7 @@
 # ローカルのZIPファイルを作成
 resource "null_resource" "create_lambda_zip" {
   provisioner "local-exec" {
-    command = "zip lambda_function.zip lamda.js"
+    command = "zip lambda_function.zip lambda.js"
     working_dir = "."
   }
 
@@ -11,7 +11,7 @@ resource "null_resource" "create_lambda_zip" {
 }
 
 data "local_file" "lambda_js" {
-  filename = "./lamda.js"
+  filename = "./lambda.js"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -33,7 +33,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 # Lambda関数をデプロイ
-resource "aws_lambda_function" "hello_lamda" {
+resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = "main.handler"
@@ -47,5 +47,5 @@ resource "aws_lambda_function" "hello_lamda" {
 }
 
 output "lambda_function_arn" {
-  value = aws_lambda_function.hello_lamda.arn
+  value = aws_lambda_function.hello_lambda.arn
 }
