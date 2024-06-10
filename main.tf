@@ -4,7 +4,7 @@ data "archive_file" "lambda_zip" {
   output_path = "./lambda.zip"
 }
 
-data "aws_iam_policy_document" "assume_role" {
+data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
     effect = "Allow"
 
@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "assume_role" {
 
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
 # Lambda関数をデプロイ
@@ -29,11 +29,7 @@ resource "aws_lambda_function" "hello_lambda" {
   handler          = "main.handler"
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
-
-  source_code_hash = filebase64sha256(data.archive_file.lambda_zip.output_path)
-
-  # ZIPファイルが変更された場合にデプロイメントをトリガー
-  depends_on = [data.archive_file.lambda_zip]
+  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 }
 
 output "lambda_function_arn" {
