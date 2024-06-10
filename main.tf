@@ -78,6 +78,24 @@ resource "aws_api_gateway_rest_api" "practice-api" {
   }
 }
 
-output "lambda_function_arn" {
-  value = aws_lambda_function.hello_lambda.arn
+resource "aws_api_gateway_deployment" "practice-api" {
+  rest_api_id = aws_api_gateway_rest_api.practice-api.id
+
+  triggers = {
+    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.practice-api.body))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_api_gateway_stage" "practice-api" {
+  deployment_id = aws_api_gateway_deployment.practice-api.id
+  rest_api_id   = aws_api_gateway_rest_api.practice-api.id
+  stage_name    = "practice-api"
+}
+
+output "api_gateway_invoke_url" {
+  value = aws_api_gateway_stage.practice-api.invoke_url
 }
