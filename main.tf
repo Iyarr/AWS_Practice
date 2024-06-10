@@ -17,19 +17,65 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
+data "aws_iam_policy_document" "api_gateway_assume_role" {
+  statement {
+    effect  = "Allow"
+  
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+  
+    actions = ["sts:AssumeRole"]
+  }
+}
+
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+
+resource "aws_iam_role" "iam_for_api_gateway" {
+  name               = "iam_for_api_gateway"
+  assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
 # Lambda関数をデプロイ
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
   role             = aws_iam_role.iam_for_lambda.arn
-  handler          = "main.handler"
+  handler          = "lambda.handler"
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+}
+
+resource "aws_api_gateway_rest_api" "practice-api" {
+  name        = "practice-api"
+
+  body = jsonencode({
+    openapi = "3.0.1"
+    info = {
+      title   = "example"
+      version = "1.0"
+    }
+    paths = {
+      "/path1" = {
+        get = {
+          x-amazon-apigateway-integration = {
+            httpMethod           = "GET"
+            payloadFormatVersion = "1.0"
+            type                 = "AWS_PROXY"
+            uri                  = aws_lambda_function.hello_lambda.invoke_arn
+          }
+        }
+      }
+    }
+  })
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 output "lambda_function_arn" {
