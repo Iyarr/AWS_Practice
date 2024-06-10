@@ -66,7 +66,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
             httpMethod           = "GET"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
-            uri                  = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.hello_lambda.arn}/invocations"
+            uri                  = aws_lambda_function.hello_lambda.invoke_arn
           }
         }
       }
