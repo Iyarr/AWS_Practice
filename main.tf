@@ -40,7 +40,7 @@ resource "aws_iam_role" "iam_for_api_gateway" {
   assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
-# Lambda関数をデプロイ
+# Lambda
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
   role             = aws_iam_role.iam_for_lambda.arn
@@ -50,6 +50,7 @@ resource "aws_lambda_function" "hello_lambda" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 }
 
+# API Gateway
 resource "aws_api_gateway_rest_api" "practice-api" {
   name        = "practice-api"
 
@@ -90,12 +91,7 @@ resource "aws_api_gateway_deployment" "practice-api" {
   }
 }
 
-resource "aws_api_gateway_stage" "practice-api" {
-  deployment_id = aws_api_gateway_deployment.practice-api.id
-  rest_api_id   = aws_api_gateway_rest_api.practice-api.id
-  stage_name    = "practice-api"
-}
-
-output "api_gateway_invoke_url" {
-  value = aws_api_gateway_stage.practice-api.invoke_url
+resource "aws_api_gateway_rest_api_policy" "practice-api" {
+  rest_api_id = aws_api_gateway_rest_api.practice-api.id
+  policy      = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
