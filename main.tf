@@ -37,7 +37,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 
 resource "aws_iam_role" "iam_for_api_gateway" {
   name               = "iam_for_api_gateway"
-  assume_role_policy = data.aws_iam_policy_document.iam_for_api_gateway.json
+  assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
 # Lambda関数をデプロイ
