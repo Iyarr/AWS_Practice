@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "api_gateway_assume_role" {
+data "aws_iam_policy_document" "api_gateway_policy" {
   statement {
     effect = "Allow"
 
@@ -28,6 +28,7 @@ data "aws_iam_policy_document" "api_gateway_assume_role" {
 
     actions = [
       "sts:AssumeRole",
+      "lambda:InvokeFunction"
     ]
   }
 }
@@ -35,21 +36,6 @@ data "aws_iam_policy_document" "api_gateway_assume_role" {
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-resource "aws_iam_role" "iam_for_api_gateway" {
-  name               = "iam_for_api_gateway"
-  assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "api_gateway_policy_lambda" {
-  role       = aws_iam_role.iam_for_api_gateway.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
 }
 
 # Lambda
@@ -111,7 +97,7 @@ resource "aws_api_gateway_stage" "practice-api" {
 
 resource "aws_api_gateway_rest_api_policy" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
-  policy      = data.aws_iam_policy_document.api_gateway_assume_role.json
+  policy      = data.aws_iam_policy_document.api_gateway_policy.json
 }
 
 output "api_gateway_invoke_url" {
