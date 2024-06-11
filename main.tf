@@ -30,6 +30,18 @@ data "aws_iam_policy_document" "api_gateway_assume_role" {
   }
 }
 
+data "aws_iam_policy_document" "api_gateway_policy" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
+    actions   = ["execute-api:Invoke"]
+    resources = ["${aws_api_gateway_rest_api.api.execution_arn}/*"]
+  }
+}
+
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
@@ -40,6 +52,7 @@ resource "aws_iam_role" "api_gateway" {
   assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
+# Attached on aws_api_gateway_rest_api_policy
 resource "aws_iam_policy" "api_gateway" {
   name        = "api_gateway"
   description = "Allow API Gateway to invoke Lambda"
@@ -106,10 +119,6 @@ resource "aws_api_gateway_deployment" "practice-api" {
   triggers = {
     redeployment = sha1(jsonencode(aws_api_gateway_rest_api.practice-api.body))
   }
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_api_gateway_stage" "practice-api" {
@@ -120,7 +129,7 @@ resource "aws_api_gateway_stage" "practice-api" {
 
 resource "aws_api_gateway_rest_api_policy" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
-  policy      = data.aws_iam_policy_document.api_gateway.json
+  policy      = data.aws_iam_policy_document.api_gateway_policy.json
 }
 
 output "api_gateway_invoke_url" {
