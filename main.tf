@@ -90,14 +90,14 @@ resource "aws_api_gateway_rest_api" "practice-api" {
   body = jsonencode({
     openapi = "3.0.1"
     info = {
-      title   = "practice-api GET request"
+      title   = "practice-api POST request"
       version = "1.0"
     }
     paths = {
       "/path1" = {
         get = {
           x-amazon-apigateway-integration = {
-            httpMethod           = "GET"
+            httpMethod           = "POST"
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
             uri                  = aws_lambda_function.hello_lambda.invoke_arn
