@@ -47,6 +47,11 @@ resource "aws_iam_role" "iam_for_api_gateway" {
   assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
+resource "aws_iam_role_policy_attachment" "api_gateway_policy_lambda" {
+  role       = aws_iam_role.iam_for_api_gateway.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+}
+
 # Lambda
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
