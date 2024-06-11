@@ -91,7 +91,17 @@ resource "aws_api_gateway_deployment" "practice-api" {
   }
 }
 
+resource "aws_api_gateway_stage" "practice-api" {
+  deployment_id = aws_api_gateway_deployment.practice-api.id
+  rest_api_id   = aws_api_gateway_rest_api.practice-api.id
+  stage_name    = "dev"
+}
+
 resource "aws_api_gateway_rest_api_policy" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
   policy      = data.aws_iam_policy_document.api_gateway_assume_role.json
+}
+
+output "api_gateway_invoke_url" {
+  value = aws_api_gateway_stage.practice-api.invoke_url
 }
