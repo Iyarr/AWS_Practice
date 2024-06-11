@@ -17,7 +17,22 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "api_gateway_policy" {
+data "aws_iam_policy_document" "api_gateway_assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+
+    actions = [
+      "sts:AssumeRole"
+    ]
+  }
+}
+
+data "aws_iam_policy_document" "api_gateway_credentials" {
   statement {
     effect = "Allow"
 
@@ -36,6 +51,11 @@ data "aws_iam_policy_document" "api_gateway_policy" {
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+}
+
+resource "aws_iam_role" "api_gateway" {
+  name               = "iam_for_api_gateway"
+  assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
 }
 
 # Lambda
@@ -66,6 +86,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
             uri                  = aws_lambda_function.hello_lambda.invoke_arn
+            credentials          = data.aws_iam_policy_document.api_gateway_credentials.arn
           }
         }
       }
@@ -97,7 +118,17 @@ resource "aws_api_gateway_stage" "practice-api" {
 
 resource "aws_api_gateway_rest_api_policy" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
-  policy      = data.aws_iam_policy_document.api_gateway_policy.json
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Principal = "*",
+        Action   = "execute-api:Invoke",
+        Resource = aws_api_gateway_rest_api.practice-api.execution_arn,
+      },
+    ],
+  })
 }
 
 output "api_gateway_invoke_url" {
