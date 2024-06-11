@@ -13,20 +13,22 @@ data "aws_iam_policy_document" "lambda_assume_role" {
       identifiers = ["lambda.amazonaws.com"]
     }
 
-    actions = ["sts:AssumeRole"]
+    actions = ["sts:AssumeRole","lambda:InvokeFunction"]
   }
 }
 
 data "aws_iam_policy_document" "api_gateway_assume_role" {
   statement {
-    effect  = "Allow"
-  
+    effect = "Allow"
+
     principals {
       type        = "Service"
       identifiers = ["apigateway.amazonaws.com"]
     }
-  
-    actions = ["sts:AssumeRole"]
+
+    actions = [
+      "sts:AssumeRole",
+    ]
   }
 }
 
@@ -52,7 +54,7 @@ resource "aws_lambda_function" "hello_lambda" {
 
 # API Gateway
 resource "aws_api_gateway_rest_api" "practice-api" {
-  name        = "practice-api"
+  name = "practice-api"
 
   body = jsonencode({
     openapi = "3.0.1"
