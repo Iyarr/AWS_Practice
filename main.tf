@@ -119,6 +119,10 @@ resource "aws_api_gateway_deployment" "practice-api" {
   triggers = {
     redeployment = sha1(jsonencode(aws_api_gateway_rest_api.practice-api.body))
   }
+  
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_stage" "practice-api" {
