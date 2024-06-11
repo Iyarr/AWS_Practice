@@ -26,25 +26,7 @@ data "aws_iam_policy_document" "api_gateway_assume_role" {
       identifiers = ["apigateway.amazonaws.com"]
     }
 
-    actions = [
-      "sts:AssumeRole"
-    ]
-  }
-}
-
-data "aws_iam_policy_document" "api_gateway_credentials" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["apigateway.amazonaws.com"]
-    }
-
-    actions = [
-      "sts:AssumeRole",
-      "lambda:InvokeFunction"
-    ]
+    actions = ["sts:AssumeRole"]
   }
 }
 
@@ -56,6 +38,26 @@ resource "aws_iam_role" "iam_for_lambda" {
 resource "aws_iam_role" "api_gateway" {
   name               = "iam_for_api_gateway"
   assume_role_policy = data.aws_iam_policy_document.api_gateway_assume_role.json
+}
+
+resource "aws_iam_policy" "api_gateway" {
+  name        = "api_gateway"
+  description = "Allow API Gateway to invoke Lambda"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = "lambda:InvokeFunction",
+        Resource = aws_lambda_function.hello_lambda.arn,
+      },
+    ],
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "api_gateway" {
+  role       = aws_iam_role.api_gateway.name
+  policy_arn = aws_iam_policy.api_gateway.arn
 }
 
 # Lambda
@@ -75,7 +77,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
   body = jsonencode({
     openapi = "3.0.1"
     info = {
-      title   = "example"
+      title   = "practice-api GET request"
       version = "1.0"
     }
     paths = {
@@ -86,7 +88,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
             payloadFormatVersion = "1.0"
             type                 = "AWS_PROXY"
             uri                  = aws_lambda_function.hello_lambda.invoke_arn
-            credentials          = data.aws_iam_policy_document.api_gateway_credentials.arn
+            credentials          = aws_iam_role.api_gateway.api_gateway.arn
           }
         }
       }
@@ -118,19 +120,9 @@ resource "aws_api_gateway_stage" "practice-api" {
 
 resource "aws_api_gateway_rest_api_policy" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
-  policy      = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect   = "Allow",
-        Principal = "*",
-        Action   = "execute-api:Invoke",
-        Resource = aws_api_gateway_rest_api.practice-api.execution_arn,
-      },
-    ],
-  })
+  policy      = data.aws_iam_policy_document.api_gateway.json
 }
 
 output "api_gateway_invoke_url" {
-  value = aws_api_gateway_stage.practice-api.invoke_url
+  value = "${aws_api_gateway_stage.practice-api.invoke_url}/path1"
 }
