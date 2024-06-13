@@ -2,6 +2,14 @@ data "archive_file" "lambda_zip" {
   type        = "zip"
   source_dir = "./lambda/dist"
   output_path = "./lambda.zip"
+  depends_on = [ null_resource.npm_install ]
+}
+
+resource "null_resource" "npm_install" {
+  provisioner "local-exec" {
+    command = "mv ./lambda/package.json ./lambda/dist && cd ./lambda/dist && npm install"
+    working_dir = "./lambda"
+  }
 }
 
 data "aws_iam_policy_document" "lambda_assume_role" {
