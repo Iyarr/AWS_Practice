@@ -16,7 +16,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./lambda
+        working-directory: ./lambda/dist
 
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,6 @@ jobs:
         with:
           node-version: 18.x
           cache: "npm"
-          cache-dependency-path: ./lambda/package-lock.json
       - run: npm install
       - run: npm run prebuild
       - run: npm run build
