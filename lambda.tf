@@ -7,7 +7,7 @@ data "archive_file" "lambda_zip" {
 
 resource "null_resource" "npm_install" {
   provisioner "local-exec" {
-    command = "mv ./lambda/package.json ./lambda/dist && cd ./lambda/dist && npm install"
+    command = "mv ./package.json ./dist/package.json && cd ./dist && npm install"
     working_dir = "./lambda"
   }
 }
