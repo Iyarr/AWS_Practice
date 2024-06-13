@@ -1,15 +1,7 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_dir = "./lambda/dist"
+  source_file = "./lambda/dist/index.js"
   output_path = "./lambda.zip"
-  depends_on = [ null_resource.npm_install ]
-}
-
-resource "null_resource" "npm_install" {
-  provisioner "local-exec" {
-    command = "mv ./package.json ./dist/package.json && cd ./dist && npm install"
-    working_dir = "./lambda"
-  }
 }
 
 data "aws_iam_policy_document" "lambda_assume_role" {
