@@ -36,7 +36,7 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git add dist
+          git add .
           git commit -m "Transpiled dist files by GitHub Actions"
 
       - name: Push changes
