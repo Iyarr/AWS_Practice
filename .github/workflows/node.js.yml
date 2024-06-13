@@ -24,6 +24,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
+          cache: "npm"
+          cache-dependency-path: ./lambda/package-lock.json
       - run: npm install
       - run: npm run prebuild
       - run: npm run build
