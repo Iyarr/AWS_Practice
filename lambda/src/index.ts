@@ -1,11 +1,5 @@
-import {
-  Handler,
-  APIGatewayProxyEvent,
-  APIGatewayProxyResult,
-} from "aws-lambda";
-
-export const handler: Handler = async (event: APIGatewayProxyEvent) => {
-  const response: APIGatewayProxyResult = {
+export const handler: any = async (event: any) => {
+  const response: any = {
     statusCode: 200,
     body: JSON.stringify("Hello from Lambda!"),
   };
