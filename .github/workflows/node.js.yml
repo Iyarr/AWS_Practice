@@ -15,10 +15,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: ./lambda
-
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 18.x
@@ -27,13 +23,18 @@ jobs:
           node-version: 18.x
           cache: "npm"
           cache-dependency-path: ./lambda/package-lock.json
-      - run: npm install
-      - run: npm run prebuild
-      - run: npm run build
+      - name: Install dependencies
+        run: |
+          - npm install
+          - npm run prebuild
+          - npm run build
+        working-directory: ./lambda
+
       - name: Configure Git
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
+        working-directory: ../
 
       - name: Check diff
         id: git-diff
