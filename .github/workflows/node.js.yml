@@ -37,12 +37,7 @@ jobs:
           npm run build
         working-directory: ./lambda
 
-      - name: Check diff
-        id: git-diff
-        run: git diff
-
       - name: Commit and push changes
-        if: steps.git-diff.outputs.stdout != ''
         run: |
           git add .
           git commit -m "Transpiled dist files by GitHub Actions"
