@@ -24,23 +24,9 @@ jobs:
           cache: "npm"
           cache-dependency-path: ./lambda/package-lock.json
 
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-        working-directory: ../
-
       - name: Install dependencies
         run: |
           npm install
           npm run prebuild
           npm run build
         working-directory: ./lambda
-
-      - name: Commit and push changes
-        run: |
-          git add .
-          git commit -m "Transpiled dist files by GitHub Actions"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT }}
