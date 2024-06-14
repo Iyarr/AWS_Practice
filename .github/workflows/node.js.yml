@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./lambda/dist
+        working-directory: ./lambda
 
     steps:
       - uses: actions/checkout@v4
