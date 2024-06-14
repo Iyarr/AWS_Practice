@@ -29,7 +29,7 @@ jobs:
         working-directory: ./lambda
 
       - name: Create zip file for Lambda
-        run: zip -r lambda.zip dist/*.mjs node_modules
+        run: zip -r lambda.zip lambda/dist/*.mjs lambda/node_modules
         working-directory: ../
 
       # Setup Terraform with the latest version
