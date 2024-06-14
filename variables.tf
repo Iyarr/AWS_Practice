@@ -12,3 +12,15 @@ variable "region" {
   type = string
   sensitive = true
 }
+
+variable "organization" {
+  description = "The name of the Terraform Cloud organization."
+  type = string
+  sensitive = true
+}
+
+variable "workspace" {
+  description = "The name of the Terraform Cloud workspace."
+  type = string
+  sensitive = true
+}

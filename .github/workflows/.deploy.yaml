@@ -1,0 +1,56 @@
+name: Terraform and npm Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform-and-npm:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Setup Node.js environment with the latest stable version
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "lts/*" # Use the latest LTS (Long Term Support) version of Node.js
+          cache: "npm"
+          cache-dependency-path: ./lambda/package-lock.json
+
+      - name: npm install and build
+        run: |
+          npm install
+          npm run build
+        working-directory: ./lambda
+
+      - name: Create zip file for Lambda
+        run: zip -r lambda.zip dist/*.mjs node_modules
+        working-directory: ../
+
+      # Setup Terraform with the latest version
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: "latest" # Use the latest version of Terraform
+
+      # Terraform Init
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ../
+
+      # Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan
+        env:
+          TFE_TOKEN: ${{ secrets.TFC_API_TOKEN }}
+
+      # Terraform Apply
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          TFE_TOKEN: ${{ secrets.TFC_API_TOKEN }}

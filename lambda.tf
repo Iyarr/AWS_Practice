@@ -1,9 +1,3 @@
-data "archive_file" "lambda_zip" {
-  type        = "zip"
-  source_file = "./lambda/dist/index.mjs"
-  output_path = "./lambda.zip"
-}
-
 data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
     effect = "Allow"
@@ -27,6 +21,7 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = "lambda.handler"
   runtime          = "nodejs20.x"
+  # lambda.zip is created at github actions
   filename         = "lambda.zip"
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  source_code_hash =  filebase64sha256("lambda.zip")
 }
