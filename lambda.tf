@@ -1,6 +1,6 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "./index.js"
+  source_file = "./index.mjs"
   output_path = "./lambda.zip"
 }
 
@@ -30,4 +30,9 @@ resource "aws_lambda_function" "hello_lambda" {
   filename         = "lambda.zip"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
+  environment {
+    variables = {
+      NODE_PATH = "/var/runtime"
+    }
+  }
 }
