@@ -56,7 +56,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
     openapi = "3.0.1"
     info = {
       title   = "practice-api POST request"
-      version = "1.0"
+      version = "1.1"
     }
     paths = {
       "/path1" = {

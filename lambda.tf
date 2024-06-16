@@ -30,7 +30,4 @@ resource "aws_lambda_function" "hello_lambda" {
   filename         = "lambda.zip"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
-  lifecycle {
-    create_before_destroy = true
-  }
 }
