@@ -32,7 +32,7 @@ resource "aws_lambda_function" "hello_lambda" {
 
   environment {
     variables = {
-      NODE_PATH = "/var/runtime"
+      NODE_PATH = "/"
     }
   }
 }
