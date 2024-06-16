@@ -1,6 +1,6 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = "./index.mjs"
+  source_dir  = "./lambda"
   output_path = "./lambda.zip"
 }
 
@@ -32,7 +32,7 @@ resource "aws_lambda_function" "hello_lambda" {
 
   environment {
     variables = {
-      NODE_PATH = "/"
+      NODE_PATH = "/var/runtime"
     }
   }
 }
