@@ -40,6 +40,8 @@ resource "aws_api_gateway_deployment" "deployment" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [ aws_api_gateway_method.method ]
 }
 
 resource "aws_api_gateway_stage" "stage" {
