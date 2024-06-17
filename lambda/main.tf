@@ -1,10 +1,10 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_dir  = "./lambda"
+  source_file  = "./lambda/index.js"
   output_path = "./lambda.zip"
 }
 
-data "aws_iam_policy_document" "lambda_assume_role" {
+data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
 
@@ -17,14 +17,14 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-resource "aws_iam_role" "iam_for_lambda" {
+resource "aws_iam_role" "default" {
   name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
-  role             = aws_iam_role.iam_for_lambda.arn
+  role             = aws_iam_role.default.arn
   handler          = "lambda.handler"
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
