@@ -84,7 +84,7 @@ resource "aws_api_gateway_deployment" "practice-api" {
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
 
   triggers = {
-    redeployment = sha1(jsonencode(aws_api_gateway_rest_api.practice-api.body))
+    redeployment = "redeply force"
   }
   
   lifecycle {
