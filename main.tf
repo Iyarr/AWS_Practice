@@ -3,7 +3,8 @@ module "lambda" {
 }
 
 module "api_gateway" {
-  source = "./api_gateway"  
+  source = "./api_gateway" 
+  hello_lambda_invoke_arn = module.lambda.hello_lambda_invoke_arn
 }
 
 provider "aws" {
