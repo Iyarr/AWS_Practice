@@ -58,7 +58,7 @@ resource "aws_api_gateway_rest_api" "practice-api" {
 }
 
 resource "aws_api_gateway_resource" "resource" {
-  path_part   = "path1"
+  path_part   = "path0"
   parent_id   = aws_api_gateway_rest_api.practice-api.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.practice-api.id
 }
