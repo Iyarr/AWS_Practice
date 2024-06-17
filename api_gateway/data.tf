@@ -27,6 +27,6 @@ data "aws_iam_policy_document" "default" {
   statement {
     effect = "Allow"
     actions = ["lambda:InvokeFunction"]
-    resources = [aws_lambda_function.hello_lambda.arn]
+    resources = [var.hello_lambda_arn]
   }
 }
