@@ -27,7 +27,7 @@ resource "aws_api_gateway_integration" "default" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.hello_lambda_invoke_arn
-  credentials = aws_iam_role.default.arn
+  credentials = aws_iam_role.api_gateway.arn
 }
 
 resource "aws_api_gateway_deployment" "default" {
