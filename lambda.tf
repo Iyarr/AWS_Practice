@@ -29,10 +29,4 @@ resource "aws_lambda_function" "hello_lambda" {
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-
-  environment {
-    variables = {
-      NODE_PATH = "/var/runtime"
-    }
-  }
 }
