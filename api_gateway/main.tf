@@ -7,30 +7,30 @@ resource "aws_api_gateway_rest_api" "default" {
   }
 }
 
-resource "aws_api_gateway_resource" "default" {
+resource "aws_api_gateway_resource" "resource" {
   path_part   = "path0"
   parent_id   = aws_api_gateway_rest_api.default.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.default.id
 }
 
-resource "aws_api_gateway_method" "default" {
+resource "aws_api_gateway_method" "method" {
   rest_api_id   = aws_api_gateway_rest_api.default.id
-  resource_id   = aws_api_gateway_resource.default.id
+  resource_id   = aws_api_gateway_resource.resource.id
   http_method   = "GET"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "default" {
+resource "aws_api_gateway_integration" "integration" {
   rest_api_id             = aws_api_gateway_rest_api.default.id
-  resource_id             = aws_api_gateway_resource.default.id
-  http_method             = aws_api_gateway_method.default.http_method
+  resource_id             = aws_api_gateway_resource.resource.id
+  http_method             = aws_api_gateway_method.method.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.hello_lambda_invoke_arn
   credentials = aws_iam_role.api_gateway.arn
 }
 
-resource "aws_api_gateway_deployment" "default" {
+resource "aws_api_gateway_deployment" "deployment" {
   rest_api_id = aws_api_gateway_rest_api.default.id
 
   triggers = {
@@ -42,8 +42,8 @@ resource "aws_api_gateway_deployment" "default" {
   }
 }
 
-resource "aws_api_gateway_stage" "default" {
-  deployment_id = aws_api_gateway_deployment.default.id
+resource "aws_api_gateway_stage" "stage" {
+  deployment_id = aws_api_gateway_deployment.deployment.id
   rest_api_id   = aws_api_gateway_rest_api.default.id
   stage_name    = "dev"
 }
