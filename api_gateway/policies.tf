@@ -1,10 +1,10 @@
-resource "aws_iam_role" "default" {
+resource "aws_iam_role" "api_gateway" {
   name               = "iam_for_api_gateway"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
-  role       = aws_iam_role.default.name
+  role       = aws_iam_role.api_gateway.name
   policy_arn = aws_iam_policy.api_gateway.arn
 }
 

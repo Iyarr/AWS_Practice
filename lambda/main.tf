@@ -17,14 +17,14 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "default" {
+resource "aws_iam_role" "lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "HelloLambdaFunction"
-  role             = aws_iam_role.default.arn
+  role             = aws_iam_role.lambda.arn
   handler          = "lambda.handler"
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
