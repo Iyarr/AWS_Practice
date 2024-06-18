@@ -12,3 +12,8 @@ variable "region" {
   type = string
   sensitive = true
 }
+
+variable "lambda_function_name" {
+  default = "HelloLambdaFunction"
+  type = string
+}

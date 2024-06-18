@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "lambda_logging" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*:*:*"]
+    resources = ["arn:aws:logs:*:log-group:${var.lambda_function_name}"]
   }
 }
 
@@ -64,4 +64,8 @@ resource "aws_lambda_function" "hello_lambda" {
 resource "aws_cloudwatch_log_group" "log_group" {
   name              = var.lambda_function_name
   retention_in_days = 3
+}
+
+variable "lambda_function_name" {
+  type = string
 }

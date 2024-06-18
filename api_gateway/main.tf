@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "default" {
-  name = "practice-api"
+  name = var.api_gateway_name
   description = "This is a practice API"
 
   endpoint_configuration {
@@ -41,7 +41,11 @@ resource "aws_api_gateway_deployment" "deployment" {
     create_before_destroy = true
   }
 
-  depends_on = [ aws_api_gateway_method.method ]
+  depends_on = [ 
+    aws_api_gateway_method.method,
+    aws_iam_role_policy_attachment.api_gateway_logs,
+    aws_cloudwatch_log_group.log_group, 
+  ]
 }
 
 resource "aws_api_gateway_stage" "stage" {
@@ -54,4 +58,9 @@ resource "aws_api_gateway_stage" "stage" {
 resource "aws_api_gateway_rest_api_policy" "default" {
   rest_api_id = aws_api_gateway_rest_api.default.id
   policy      = data.aws_iam_policy_document.end_user_policy.json
+}
+
+resource "aws_cloudwatch_log_group" "log_group" {
+  name              = var.api_gateway_name
+  retention_in_days = 3
 }
