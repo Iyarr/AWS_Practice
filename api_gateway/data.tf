@@ -1,3 +1,11 @@
+data "aws_iam_policy_document" "default" {
+  statement {
+    effect = "Allow"
+    actions = ["lambda:InvokeFunction"]
+    resources = [var.hello_lambda_arn]
+  }
+}
+
 data "aws_iam_policy_document" "assume_role_policy" {
   statement {
     effect = "Allow"
@@ -23,10 +31,16 @@ data "aws_iam_policy_document" "end_user_policy" {
   }
 }
 
-data "aws_iam_policy_document" "default" {
+data "aws_iam_policy_document" "api_gateway_logging" {
   statement {
     effect = "Allow"
-    actions = ["lambda:InvokeFunction"]
-    resources = [var.hello_lambda_arn]
+
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+    ]
+
+    resources = ["arn:aws:logs:*:log-group:${var.api_gateway_name}"]
   }
 }
