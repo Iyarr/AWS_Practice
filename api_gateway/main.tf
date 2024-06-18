@@ -43,7 +43,7 @@ resource "aws_api_gateway_deployment" "deployment" {
 
   depends_on = [ 
     aws_api_gateway_method.method,
-    aws_iam_role_policy_attachment.lambda_logs,
+    aws_iam_role_policy_attachment.api_gateway_logs,
     aws_cloudwatch_log_group.log_group, 
   ]
 }
