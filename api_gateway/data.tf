@@ -41,6 +41,6 @@ data "aws_iam_policy_document" "api_gateway_logging" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*:log-group:${var.api_gateway_name}:*"]
+    resources = ["*"]
   }
 }
