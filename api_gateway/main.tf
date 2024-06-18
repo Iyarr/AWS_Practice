@@ -61,6 +61,11 @@ resource "aws_api_gateway_rest_api_policy" "default" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = var.api_gateway_name
+  name              = "/aws/api_gateway/${var.api_gateway_name}"
   retention_in_days = 3
+}
+
+resource "aws_cloudwatch_log_stream" "log_stream" {
+  name           = var.api_gateway_name
+  log_group_name = aws_cloudwatch_log_group.log_group.name
 }
