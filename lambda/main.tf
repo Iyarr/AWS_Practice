@@ -27,7 +27,7 @@ data "aws_iam_policy_document" "lambda_logging" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["arn:aws:logs:*:log-group:${var.lambda_function_name}"]
+    resources = ["arn:aws:logs:*:log-group:${var.lambda_function_name}:*"]
   }
 }
 
