@@ -38,6 +38,10 @@ data "aws_iam_policy_document" "api_gateway_logging" {
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
       "logs:PutLogEvents",
     ]
 
