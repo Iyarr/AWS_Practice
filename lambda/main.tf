@@ -57,18 +57,18 @@ resource "aws_lambda_function" "hello_lambda" {
 
   depends_on = [
     aws_iam_role_policy_attachment.lambda_logs,
-    aws_cloudwatch_log_group.log_group,
+    aws_cloudwatch_log_stream.lambda_log_stream,
   ]
 }
 
-resource "aws_cloudwatch_log_group" "log_group" {
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = 3
 }
 
-resource "aws_cloudwatch_log_stream" "log_stream" {
+resource "aws_cloudwatch_log_stream" "lambda_log_stream" {
   name           = var.lambda_function_name
-  log_group_name = aws_cloudwatch_log_group.log_group.name
+  log_group_name = aws_cloudwatch_log_group.lambda_log_group.name
 }
 
 variable "lambda_function_name" {
