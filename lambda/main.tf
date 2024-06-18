@@ -48,7 +48,7 @@ resource "aws_iam_role" "lambda" {
 }
 
 resource "aws_lambda_function" "hello_lambda" {
-  function_name    = "HelloLambdaFunction"
+  function_name    = var.lambda_function_name
   role             = aws_iam_role.lambda.arn
   handler          = "lambda.handler"
   runtime          = "nodejs20.x"
@@ -62,6 +62,6 @@ resource "aws_lambda_function" "hello_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = aws_lambda_function.hello_lambda.function_name
+  name              = var.lambda_function_name
   retention_in_days = 2
 }
