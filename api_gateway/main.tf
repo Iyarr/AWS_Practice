@@ -44,7 +44,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [ 
     aws_api_gateway_method.method,
     aws_iam_role_policy_attachment.api_gateway_logs,
-    aws_cloudwatch_log_group.log_group, 
+    aws_cloudwatch_log_stream.api_gateway_log_stream, 
   ]
 }
 
@@ -60,12 +60,12 @@ resource "aws_api_gateway_rest_api_policy" "default" {
   policy      = data.aws_iam_policy_document.end_user_policy.json
 }
 
-resource "aws_cloudwatch_log_group" "log_group" {
+resource "aws_cloudwatch_log_group" "api_gateway_log_group" {
   name              = "/aws/api_gateway/${var.api_gateway_name}"
   retention_in_days = 3
 }
 
-resource "aws_cloudwatch_log_stream" "log_stream" {
+resource "aws_cloudwatch_log_stream" "api_gateway_log_stream" {
   name           = var.api_gateway_name
-  log_group_name = aws_cloudwatch_log_group.log_group.name
+  log_group_name = aws_cloudwatch_log_group.api_gateway_log_group.name
 }
