@@ -41,8 +41,10 @@ resource "aws_api_gateway_deployment" "deployment" {
     create_before_destroy = true
   }
 
-  depends_on = [ 
+  depends_on = [
+    aws_api_gateway_resource.resource,
     aws_api_gateway_method.method,
+    aws_api_gateway_integration.integration,
     aws_iam_role_policy_attachment.api_gateway_logs,
     aws_cloudwatch_log_stream.api_gateway_log_stream, 
   ]
