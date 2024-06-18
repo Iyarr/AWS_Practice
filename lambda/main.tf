@@ -62,8 +62,13 @@ resource "aws_lambda_function" "hello_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
-  name              = var.lambda_function_name
+  name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = 3
+}
+
+resource "aws_cloudwatch_log_stream" "log_stream" {
+  name           = var.lambda_function_name
+  log_group_name = aws_cloudwatch_log_group.log_group.name
 }
 
 variable "lambda_function_name" {
