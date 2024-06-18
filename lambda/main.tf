@@ -63,5 +63,5 @@ resource "aws_lambda_function" "hello_lambda" {
 
 resource "aws_cloudwatch_log_group" "log_group" {
   name              = var.lambda_function_name
-  retention_in_days = 2
+  retention_in_days = 3
 }
