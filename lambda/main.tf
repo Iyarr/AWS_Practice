@@ -20,10 +20,14 @@ data "aws_iam_policy_document" "assume_role" {
 data "aws_iam_policy_document" "lambda_logging" {
   statement {
     effect = "Allow"
-
+    
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
       "logs:PutLogEvents",
     ]
 
