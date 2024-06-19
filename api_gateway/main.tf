@@ -41,10 +41,12 @@ resource "aws_api_gateway_deployment" "deployment" {
     create_before_destroy = true
   }
 
-  depends_on = [
-    aws_api_gateway_integration.integration,
-    aws_cloudwatch_log_stream.api_gateway_log_stream, 
-  ]
+  depends_on = [ aws_api_gateway_integration.integration ]
+}
+
+# Don't be deleted and returned to default by terraoform once set
+resource "aws_api_gateway_account" "account" {
+  cloudwatch_role_arn = aws_iam_role.api_gateway_logging.arn
 }
 
 resource "aws_api_gateway_stage" "stage" {
@@ -66,10 +68,7 @@ resource "aws_api_gateway_stage" "stage" {
     })
   }
 
-  depends_on = [
-    aws_cloudwatch_log_group.api_gateway_log_group,
-    aws_iam_role_policy_attachment.api_gateway_logs 
-  ]
+  depends_on = [ aws_api_gateway_account.account ]
 }
 
 resource "aws_api_gateway_method_settings" "method_settings" {
