@@ -61,7 +61,7 @@ resource "aws_lambda_function" "hello_lambda" {
 
   logging_config {
     log_group = aws_cloudwatch_log_group.lambda_log_group.name
-    log_format = "json"
+    log_format = "JSON"
     system_log_level = "INFO"
   }
 
