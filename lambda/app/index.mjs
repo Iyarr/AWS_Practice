@@ -1,4 +1,4 @@
-exports.lambda_handler = async (event, context) => {
+export const handler = async (event, context) => {
   return new Promise(function (resolve, reject) {
     resolve({
       statusCode: 200,

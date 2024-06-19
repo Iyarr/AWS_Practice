@@ -1,4 +1,4 @@
-data "archive_file" "lambda_zip" {
+data "archive_file" "zip" {
   type        = "zip"
   source_dir  = "lambda/app"
   output_path = "app.zip"
@@ -47,17 +47,17 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = "iam_for_lambda"
+  name               = "iam_role_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = var.lambda_function_name
   role             = aws_iam_role.lambda.arn
-  handler          = "index.lambda_handler"
+  handler          = "index.handler"
   runtime          = "nodejs20.x"
-  filename         = data.archive_file.lambda_zip.output_path
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  filename         = data.archive_file.zip.output_path
+  source_code_hash = data.archive_file.zip.output_base64sha256
 
   logging_config {
     log_group = aws_cloudwatch_log_group.lambda_log_group.name
