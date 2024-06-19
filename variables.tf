@@ -14,6 +14,6 @@ variable "region" {
 }
 
 variable "lambda_function_name" {
-  default = "HelloLambdaFunction"
+  default = "HelloLambda"
   type = string
 }
