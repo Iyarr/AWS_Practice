@@ -60,7 +60,7 @@ resource "aws_lambda_function" "hello_lambda" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   logging_config {
-    log_group = aws_cloudwatch_log_group.lambda_log_group
+    log_group = aws_cloudwatch_log_group.lambda_log_group.name
     log_format = "json"
     system_log_level = "INFO"
   }
