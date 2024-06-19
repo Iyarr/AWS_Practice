@@ -1,7 +1,7 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file  = "./lambda/index.js"
-  output_path = "./lambda.zip"
+  source_dir  = "lambda/app"
+  output_path = "app.zip"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -56,7 +56,7 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.lambda.arn
   handler          = "lambda.handler"
   runtime          = "nodejs20.x"
-  filename         = "lambda.zip"
+  filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   depends_on = [
