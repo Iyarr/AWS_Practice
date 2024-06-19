@@ -42,10 +42,7 @@ resource "aws_api_gateway_deployment" "deployment" {
   }
 
   depends_on = [
-    aws_api_gateway_resource.resource,
-    aws_api_gateway_method.method,
     aws_api_gateway_integration.integration,
-    aws_iam_role_policy_attachment.api_gateway_logs,
     aws_cloudwatch_log_stream.api_gateway_log_stream, 
   ]
 }
@@ -68,6 +65,11 @@ resource "aws_api_gateway_stage" "stage" {
       responseLength = "$context.responseLength"
     })
   }
+
+  depends_on = [
+    aws_cloudwatch_log_group.api_gateway_log_group,
+    aws_iam_role_policy_attachment.api_gateway_logs 
+  ]
 }
 
 resource "aws_api_gateway_method_settings" "method_settings" {
