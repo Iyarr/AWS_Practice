@@ -54,7 +54,7 @@ resource "aws_iam_role" "lambda" {
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = var.lambda_function_name
   role             = aws_iam_role.lambda.arn
-  handler          = "lambda.handler"
+  handler          = "index.lambda_handler"
   runtime          = "nodejs20.x"
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
