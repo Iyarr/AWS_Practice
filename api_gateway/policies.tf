@@ -29,6 +29,6 @@ resource "aws_iam_policy" "api_gateway_logging" {
 }
 
 resource "aws_iam_role_policy_attachment" "api_gateway_logs" {
-  role       = aws_iam_role.api_gateway.name
+  role       = aws_iam_role.api_gateway_logging.name
   policy_arn = aws_iam_policy.api_gateway_logging.arn
 }
