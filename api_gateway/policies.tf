@@ -1,5 +1,11 @@
+# Don't duplicate reource names to other modules.
 resource "aws_iam_role" "api_gateway" {
   name               = "iam_for_api_gateway"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+}
+
+resource "aws_iam_role" "api_gateway_logging" {
+  name               = "iam_for_logging"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
