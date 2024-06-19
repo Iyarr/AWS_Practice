@@ -65,10 +65,7 @@ resource "aws_lambda_function" "hello_lambda" {
     system_log_level = "INFO"
   }
 
-  depends_on = [
-    aws_iam_role_policy_attachment.lambda_logs,
-    aws_cloudwatch_log_stream.lambda_log_stream,
-  ]
+  depends_on = [ aws_iam_role_policy_attachment.lambda_logs ]
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
