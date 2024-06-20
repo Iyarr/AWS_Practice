@@ -1,17 +1,17 @@
 # Don't duplicate reource names to other modules.
 resource "aws_iam_role" "api_gateway" {
-  name               = "iam_for_api_gateway"
+  name               = var.prefix + "iam_for_api_gateway"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
 resource "aws_iam_role" "api_gateway_logging" {
-  name               = "iam_for_logging"
+  name               = var.prefix + "iam_for_logging"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
 }
 
 # Attached to the API Gateway role
 resource "aws_iam_policy" "api_gateway" {
-  name        = "api_gateway"
+  name        = var.prefix + "api_gateway"
   description = "Allow API Gateway to invoke Lambda"
   policy = data.aws_iam_policy_document.default.json
 }
@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 
 # Logging policy
 resource "aws_iam_policy" "api_gateway_logging" {
-  name        = "api_gateway_logging"
+  name        = var.prefix + "api_gateway_logging"
   description = "IAM policy for logging from a api_gateway"
   policy      = data.aws_iam_policy_document.api_gateway_logging.json
 }

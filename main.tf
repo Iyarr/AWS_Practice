@@ -1,6 +1,7 @@
 module "lambda" {
   source = "./lambda"
   lambda_function_name = var.lambda_function_name
+  prefix = var.prefix
 }
 
 module "api_gateway" {
@@ -8,18 +9,13 @@ module "api_gateway" {
   hello_lambda_invoke_arn = module.lambda.hello_lambda_invoke_arn
   hello_lambda_arn = module.lambda.hello_lambda_arn
   lambda_function_name = var.lambda_function_name
+  prefix = var.prefix
 }
 
 provider "aws" {
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
   region     = var.region
-
-  default_tags {
-    tags = {
-      name = "This is a test tag"
-    }
-  }
 }
 
 output "api_gateway_invoke_url" {

@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "lambda_logging" {
 }
 
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "lambda_logging"
+  name        = var.prefix + "lambda_logging"
   description = "IAM policy for logging from a lambda"
   policy      = data.aws_iam_policy_document.lambda_logging.json
 }
@@ -47,12 +47,12 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 }
 
 resource "aws_iam_role" "lambda" {
-  name               = "iam_role_for_lambda"
+  name               = var.prefix + "iam_role_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_function" "hello_lambda" {
-  function_name    = var.lambda_function_name
+  function_name    = var.prefix + var.lambda_function_name
   role             = aws_iam_role.lambda.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
@@ -69,7 +69,7 @@ resource "aws_lambda_function" "hello_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${var.lambda_function_name}"
+  name              = var.prefix + var.lambda_function_name
   retention_in_days = 3
 
   lifecycle {
@@ -78,5 +78,9 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
 }
 
 variable "lambda_function_name" {
+  type = string
+}
+
+variable "prefix" {
   type = string
 }

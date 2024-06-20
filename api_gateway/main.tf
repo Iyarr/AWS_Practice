@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "default" {
-  name = var.api_gateway_name
+  name = var.prefix + var.api_gateway_name
   description = "This is a practice API"
 
   endpoint_configuration {
@@ -89,7 +89,7 @@ resource "aws_api_gateway_rest_api_policy" "default" {
 }
 
 resource "aws_cloudwatch_log_group" "api_gateway_log_group" {
-  name              = "/aws/api_gateway/${var.api_gateway_name}"
+  name              = var.prefix + var.api_gateway_name
   retention_in_days = 3
 
   lifecycle {
