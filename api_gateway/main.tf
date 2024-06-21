@@ -40,8 +40,6 @@ resource "aws_api_gateway_deployment" "default" {
   lifecycle {
     create_before_destroy = true
   }
-
-  depends_on = [ aws_api_gateway_integration.default ]
 }
 
 # Don't be deleted and returned to default by terraoform once set
