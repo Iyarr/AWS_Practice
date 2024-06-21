@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "logs" {
 }
 
 resource "aws_iam_policy" "logs" {
-  name        = var.prefix + "lambda_log_policy"
+  name        = "${var.prefix}lambda_log_policy"
   description = "authorize lambda to put logs"
   policy      = data.aws_iam_policy_document.logs.json
 }
@@ -47,7 +47,7 @@ resource "aws_iam_role_policy_attachment" "logs" {
 }
 
 resource "aws_iam_role" "default" {
-  name               = var.prefix + "role_for_lambda"
+  name               = "${var.prefix}role_for_lambda"
   description = "role attaching to lambda"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
