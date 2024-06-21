@@ -53,7 +53,7 @@ resource "aws_iam_role" "default" {
 }
 
 resource "aws_lambda_function" "hello_lambda" {
-  function_name    = var.prefix + var.lambda_function_name
+  function_name    = "${var.prefix}${var.lambda_function_name}"
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
@@ -70,7 +70,7 @@ resource "aws_lambda_function" "hello_lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name              = var.prefix + var.lambda_function_name
+  name              = "${var.prefix}${var.lambda_function_name}"
   retention_in_days = 3
 
   lifecycle {
