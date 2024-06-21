@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "invoke_lambda" {
+data "aws_iam_policy_document" "integration" {
   statement {
     effect = "Allow"
     actions = ["lambda:InvokeFunction"]
