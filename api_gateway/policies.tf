@@ -30,5 +30,5 @@ resource "aws_iam_policy" "logs" {
 
 resource "aws_iam_role_policy_attachment" "logs" {
   role       = aws_iam_role.logs.name
-  policy_arn = aws_iam_policy.integration.arn
+  policy_arn = aws_iam_policy.logs.arn
 }
