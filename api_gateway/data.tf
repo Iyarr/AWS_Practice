@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "default" {
+data "aws_iam_policy_document" "integration" {
   statement {
     effect = "Allow"
     actions = ["lambda:InvokeFunction"]
@@ -19,7 +19,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
   }
 }
 
-data "aws_iam_policy_document" "end_user_policy" {
+data "aws_iam_policy_document" "end_user" {
   statement {
     effect = "Allow"
     principals {
@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "end_user_policy" {
   }
 }
 
-data "aws_iam_policy_document" "api_gateway_logging" {
+data "aws_iam_policy_document" "logs" {
   statement {
     effect = "Allow"
 
