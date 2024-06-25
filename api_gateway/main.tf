@@ -44,11 +44,6 @@ resource "aws_api_gateway_deployment" "default" {
   depends_on = [ aws_api_gateway_integration.default ]
 }
 
-# Don't be deleted and returned to default by terraoform once set
-resource "aws_api_gateway_account" "default" {
-  cloudwatch_role_arn = aws_iam_role.logs.arn
-}
-
 resource "aws_api_gateway_stage" "default" {
   deployment_id = aws_api_gateway_deployment.default.id
   rest_api_id   = aws_api_gateway_rest_api.default.id
@@ -66,6 +61,10 @@ resource "aws_api_gateway_stage" "default" {
       protocol = "$context.protocol",
       responseLength = "$context.responseLength"
     })
+  }
+
+  variables = {
+    cloudwatchRoleArn = aws_iam_role.logs.arn
   }
 
   depends_on = [ aws_api_gateway_account.default ]
