@@ -66,8 +66,6 @@ resource "aws_api_gateway_stage" "default" {
   variables = {
     cloudwatchRoleArn = aws_iam_role.logs.arn
   }
-
-  depends_on = [ aws_api_gateway_account.default ]
 }
 
 resource "aws_api_gateway_method_settings" "default" {
