@@ -12,13 +12,3 @@ variable "region" {
   type = string
   sensitive = true
 }
-
-variable "lambda_function_name" {
-  default = "HelloLambda"
-  type = string
-}
-
-variable "prefix" {
-  default = "test_"
-  type = string
-}
