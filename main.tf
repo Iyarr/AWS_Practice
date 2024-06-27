@@ -1,6 +1,7 @@
 module "lambda" {
   source = "./lambda"
   lambda_function_name = var.lambda_function_name
+  prefix = var.prefix
 }
 
 module "api_gateway" {
@@ -8,6 +9,7 @@ module "api_gateway" {
   hello_lambda_invoke_arn = module.lambda.hello_lambda_invoke_arn
   hello_lambda_arn = module.lambda.hello_lambda_arn
   lambda_function_name = var.lambda_function_name
+  prefix = var.prefix
 }
 
 provider "aws" {
@@ -17,5 +19,5 @@ provider "aws" {
 }
 
 output "api_gateway_invoke_url" {
-  value = "${module.api_gateway.invoke_url}/path0"
+  value = module.api_gateway.invoke_url
 }

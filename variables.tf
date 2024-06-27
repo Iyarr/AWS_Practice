@@ -17,3 +17,8 @@ variable "lambda_function_name" {
   default = "HelloLambdaFunction"
   type = string
 }
+
+variable "prefix" {
+  default = "test_"
+  type = string
+}

@@ -60,8 +60,7 @@ resource "aws_lambda_function" "hello_lambda" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 
   depends_on = [
-    aws_iam_role_policy_attachment.lambda_logs,
-    aws_cloudwatch_log_stream.lambda_log_stream,
+    aws_iam_role_policy_attachment.lambda_logs
   ]
 }
 
@@ -71,5 +70,9 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
 }
 
 variable "lambda_function_name" {
+  type = string
+}
+
+variable "prefix" {
   type = string
 }

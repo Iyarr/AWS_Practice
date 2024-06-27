@@ -10,6 +10,10 @@ variable "lambda_function_name" {
   type = string
 }
 
+variable "prefix" {
+  type = string
+}
+
 variable "api_gateway_name" {
   default = "practice_api"
   type = string
