@@ -1,7 +1,7 @@
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file  = "./lambda/index.js"
-  output_path = "./lambda.zip"
+  source_file  = "index.mjs"
+  output_path = "lambda.zip"
 }
 
 data "aws_iam_policy_document" "assume_role" {
