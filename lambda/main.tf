@@ -36,24 +36,24 @@ data "aws_iam_policy_document" "logs" {
 }
 
 resource "aws_iam_policy" "logs" {
-  name        = "lambda_logging"
-  description = "IAM policy for logging from a lambda"
+  name        = "${var.prefix}lambda_log_policy"
+  description = "authorize lambda to put logs"
   policy      = data.aws_iam_policy_document.logs.json
 }
 
 resource "aws_iam_role_policy_attachment" "logs" {
-  role       = aws_iam_role.lambda.name
+  role       = aws_iam_role.default.name
   policy_arn = aws_iam_policy.logs.arn
 }
 
-resource "aws_iam_role" "lambda" {
-  name               = "iam_for_lambda"
+resource "aws_iam_role" "default" {
+  name               = "${var.prefix}role_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = var.lambda_function_name
-  role             = aws_iam_role.lambda.arn
+  role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
   filename         = data.archive_file.zip.output_path
