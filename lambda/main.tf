@@ -54,7 +54,7 @@ resource "aws_iam_role" "lambda" {
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = var.lambda_function_name
   role             = aws_iam_role.lambda.arn
-  handler          = "lambda.handler"
+  handler          = "index.handler"
   runtime          = "nodejs20.x"
   filename         = "lambda.zip"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
@@ -68,11 +68,6 @@ resource "aws_lambda_function" "hello_lambda" {
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
   name              = "/aws/lambda/${var.lambda_function_name}"
   retention_in_days = 3
-}
-
-resource "aws_cloudwatch_log_stream" "lambda_log_stream" {
-  name           = var.lambda_function_name
-  log_group_name = aws_cloudwatch_log_group.lambda_log_group.name
 }
 
 variable "lambda_function_name" {
