@@ -1,7 +1,7 @@
-data "archive_file" "lambda_zip" {
+data "archive_file" "zip" {
   type        = "zip"
   source_file  = "lambda/index.mjs"
-  output_path = "lambda.zip"
+  output_path = "app.zip"
 }
 
 data "aws_iam_policy_document" "assume_role" {
@@ -17,7 +17,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_logging" {
+data "aws_iam_policy_document" "logs" {
   statement {
     effect = "Allow"
     
@@ -35,15 +35,15 @@ data "aws_iam_policy_document" "lambda_logging" {
   }
 }
 
-resource "aws_iam_policy" "lambda_logging" {
+resource "aws_iam_policy" "logs" {
   name        = "lambda_logging"
   description = "IAM policy for logging from a lambda"
-  policy      = data.aws_iam_policy_document.lambda_logging.json
+  policy      = data.aws_iam_policy_document.logs.json
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_logs" {
+resource "aws_iam_role_policy_attachment" "logs" {
   role       = aws_iam_role.lambda.name
-  policy_arn = aws_iam_policy.lambda_logging.arn
+  policy_arn = aws_iam_policy.logs.arn
 }
 
 resource "aws_iam_role" "lambda" {
@@ -56,16 +56,22 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.lambda.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
-  filename         = "lambda.zip"
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+  filename         = data.archive_file.zip.output_path
+  source_code_hash = data.archive_file.zip.output_base64sha256
+
+  logging_config {
+    log_group = aws_cloudwatch_log_group.default.name
+    log_format = "JSON"
+    system_log_level = "INFO"
+  }
 
   depends_on = [
-    aws_iam_role_policy_attachment.lambda_logs
+    aws_iam_role_policy_attachment.logs
   ]
 }
 
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${var.lambda_function_name}"
+resource "aws_cloudwatch_log_group" "default" {
+  name              = "${var.prefix}${var.lambda_function_name}"
   retention_in_days = 3
 }
 

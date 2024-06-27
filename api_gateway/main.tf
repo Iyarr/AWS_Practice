@@ -7,30 +7,30 @@ resource "aws_api_gateway_rest_api" "default" {
   }
 }
 
-resource "aws_api_gateway_resource" "resource" {
+resource "aws_api_gateway_resource" "default" {
   path_part   = "path0"
   parent_id   = aws_api_gateway_rest_api.default.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.default.id
 }
 
-resource "aws_api_gateway_method" "method" {
+resource "aws_api_gateway_method" "default" {
   rest_api_id   = aws_api_gateway_rest_api.default.id
-  resource_id   = aws_api_gateway_resource.resource.id
+  resource_id   = aws_api_gateway_resource.default.id
   http_method   = "GET"
   authorization = "NONE"
 }
 
-resource "aws_api_gateway_integration" "integration" {
+resource "aws_api_gateway_integration" "default" {
   rest_api_id             = aws_api_gateway_rest_api.default.id
-  resource_id             = aws_api_gateway_resource.resource.id
-  http_method             = aws_api_gateway_method.method.http_method
+  resource_id             = aws_api_gateway_resource.default.id
+  http_method             = aws_api_gateway_method.default.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = var.hello_lambda_invoke_arn
   credentials = aws_iam_role.api_gateway.arn
 }
 
-resource "aws_api_gateway_deployment" "deployment" {
+resource "aws_api_gateway_deployment" "default" {
   rest_api_id = aws_api_gateway_rest_api.default.id
 
   triggers = {
@@ -41,21 +41,21 @@ resource "aws_api_gateway_deployment" "deployment" {
     create_before_destroy = true
   }
 
-  depends_on = [ aws_api_gateway_integration.integration ]
+  depends_on = [ aws_api_gateway_integration.default ]
 }
 
 # Don't be deleted and returned to default by terraoform once set
 resource "aws_api_gateway_account" "account" {
-  cloudwatch_role_arn = aws_iam_role.api_gateway_logging.arn
+  cloudwatch_role_arn = aws_iam_role.account.arn
 }
 
-resource "aws_api_gateway_stage" "stage" {
-  deployment_id = aws_api_gateway_deployment.deployment.id
+resource "aws_api_gateway_stage" "default" {
+  deployment_id = aws_api_gateway_deployment.default.id
   rest_api_id   = aws_api_gateway_rest_api.default.id
   stage_name    = "dev"
 
   access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.api_gateway_log_group.arn
+    destination_arn = aws_cloudwatch_log_group.default.arn
     format          = jsonencode({
       requestId = "$context.requestId",
       ip = "$context.identity.sourceIp",
@@ -71,9 +71,9 @@ resource "aws_api_gateway_stage" "stage" {
   depends_on = [ aws_api_gateway_account.account ]
 }
 
-resource "aws_api_gateway_method_settings" "method_settings" {
+resource "aws_api_gateway_method_settings" "default" {
   rest_api_id = aws_api_gateway_rest_api.default.id
-  stage_name = aws_api_gateway_stage.stage.stage_name
+  stage_name = aws_api_gateway_stage.default.stage_name
   method_path = "*/*"
 
   settings {
@@ -85,15 +85,10 @@ resource "aws_api_gateway_method_settings" "method_settings" {
 # Approval for API end users to access the API
 resource "aws_api_gateway_rest_api_policy" "default" {
   rest_api_id = aws_api_gateway_rest_api.default.id
-  policy      = data.aws_iam_policy_document.end_user_policy.json
+  policy      = data.aws_iam_policy_document.end_user.json
 }
 
-resource "aws_cloudwatch_log_group" "api_gateway_log_group" {
-  name              = "/aws/api_gateway/${var.api_gateway_name}"
+resource "aws_cloudwatch_log_group" "default" {
+  name              = "${var.prefix}${var.api_gateway_name}"
   retention_in_days = 3
-}
-
-resource "aws_cloudwatch_log_stream" "api_gateway_log_stream" {
-  name           = var.api_gateway_name
-  log_group_name = aws_cloudwatch_log_group.api_gateway_log_group.name
 }
