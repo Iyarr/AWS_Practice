@@ -5,7 +5,7 @@ resource "aws_iam_role" "integration" {
 }
 
 resource "aws_iam_role" "account" {
-  name               = "iam_for_logging"
+  name               = "${var.prefix}role_for_api_gateway_account"
   assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
   description = "This role is apply to all api gateway in aws account. Please change it carefully!!!"
 }

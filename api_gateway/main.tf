@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "default" {
-  name = var.api_gateway_name
+  name = "${var.prefix}${var.api_gateway_name}"
   description = "This is a practice API"
 
   endpoint_configuration {
