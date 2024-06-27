@@ -11,6 +11,10 @@ resource "aws_api_gateway_resource" "default" {
   path_part   = "path0"
   parent_id   = aws_api_gateway_rest_api.default.root_resource_id
   rest_api_id = aws_api_gateway_rest_api.default.id
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_method" "default" {
