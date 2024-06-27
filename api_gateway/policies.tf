@@ -14,7 +14,7 @@ resource "aws_iam_role" "account" {
 resource "aws_iam_policy" "integration" {
   name        = "${var.prefix}api_gateway_integration"
   description = "Allow API Gateway to invoke Lambda"
-  policy = data.aws_iam_policy_document.default.json
+  policy = data.aws_iam_policy_document.integration.json
 }
 
 resource "aws_iam_role_policy_attachment" "default" {
