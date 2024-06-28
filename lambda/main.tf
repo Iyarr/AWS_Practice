@@ -6,6 +6,7 @@ data "archive_file" "zip" {
 
 resource "aws_s3_bucket" "app" {
   bucket_prefix = var.prefix
+  bucket = "${var.prefix}app"
 }
 
 resource "aws_s3_object" "app" {
@@ -15,7 +16,7 @@ resource "aws_s3_object" "app" {
 }
 
 resource "aws_lambda_function" "hello_lambda" {
-  function_name    = var.lambda_function_name
+  function_name    = "${var.prefix}${var.lambda_function_name}"
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
@@ -40,7 +41,7 @@ resource "aws_cloudwatch_log_group" "default" {
 }
 
 resource "aws_codebuild_project" "npm_build" {
-  name          = "npm_build_project"
+  name          = "${var.prefix}npm_build_project"
   description   = "CodeBuild project to build and deploy Lambda function"
   build_timeout = "5"
 
