@@ -58,7 +58,7 @@ resource "aws_codebuild_project" "npm_build" {
   source {
     type            = "S3"
     location        = "${aws_s3_bucket.app.bucket}/input/app.zip"
-    buildspec       = file("buildspec.yml")
+    buildspec       = file("lambda/buildspec.yml")
   }
 
   service_role = aws_iam_role.codebuild_service_role.arn
