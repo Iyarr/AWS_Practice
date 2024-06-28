@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20.x
+  pre_build:
+    commands:
+      - echo "Installing dependencies..."
+      - rm package-lock.json
+      - npm install
+  build:
+    commands:
+      - echo "Building the project..."
+      - npm run build
+  post_build:
+    commands:
+      - echo "Packaging the project..."
+      - cp -r node_modules dist
+      - cd dist
+      - zip -r output.zip .
+
+artifacts:
+  files:
+    - output.zip
