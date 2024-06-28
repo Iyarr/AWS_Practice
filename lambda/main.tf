@@ -39,7 +39,7 @@ resource "aws_cloudwatch_log_group" "default" {
 }
 
 resource "aws_codebuild_project" "npm_build" {
-  name          = "npm build project"
+  name          = "npm_build_project"
   description   = "CodeBuild project to build and deploy Lambda function"
   build_timeout = "5"
 
