@@ -5,7 +5,7 @@ data "archive_file" "zip" {
 }
 
 resource "aws_s3_bucket" "app" {
-  bucket = "${var.prefix}app"
+  bucket = "app"
 }
 
 resource "aws_s3_object" "app" {
