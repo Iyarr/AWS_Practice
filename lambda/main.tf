@@ -14,7 +14,7 @@ resource "aws_s3_bucket" "app" {
 
 resource "aws_s3_object" "app" {
   bucket = aws_s3_bucket.app.bucket
-  key    = "/input/app.zip"
+  key    = "input.zip"
   source = data.archive_file.zip.output_path
 }
 
@@ -50,7 +50,7 @@ resource "aws_codebuild_project" "npm_build" {
 
   artifacts {
     type = "S3"
-    location = "${aws_s3_bucket.app.bucket}/output"
+    location = aws_s3_bucket.app.bucket
   }
 
   environment {
@@ -62,7 +62,7 @@ resource "aws_codebuild_project" "npm_build" {
 
   source {
     type            = "S3"
-    location        = "${aws_s3_bucket.app.bucket}/input/app.zip"
+    location        = "${aws_s3_bucket.app.bucket}/input.zip"
     buildspec       = file("lambda/buildspec.yaml")
   }
 
