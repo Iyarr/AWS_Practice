@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "logs" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_fullaccess_policy" {
+data "aws_iam_policy_document" "lambda_fullaccess" {
   statement {
     effect = "Allow"
     
