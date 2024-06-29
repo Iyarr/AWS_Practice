@@ -5,7 +5,7 @@ data "archive_file" "zip" {
 }
 
 resource "aws_s3_bucket" "app" {
-  bucket = "iyarr_test-aws-practice-app"
+  bucket = "iyarr-test-aws-practice-app"
 
   lifecycle {
     create_before_destroy = true
