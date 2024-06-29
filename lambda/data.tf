@@ -28,3 +28,13 @@ data "aws_iam_policy_document" "logs" {
     resources = ["*"]
   }
 }
+
+data "aws_iam_policy_document" "lambda_fullaccess_policy" {
+  statement {
+    effect = "Allow"
+    
+    actions = ["lambda:*"]
+
+    resources = ["*"]
+  }
+}

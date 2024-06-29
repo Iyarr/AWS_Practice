@@ -6,6 +6,10 @@ data "archive_file" "zip" {
 
 resource "aws_s3_bucket" "app" {
   bucket = "app"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_s3_object" "app" {
@@ -72,7 +76,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   role       = aws_iam_role.codebuild_service_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+  policy_arn = aws_iam_policy.lambda_fullaccess.arn
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {

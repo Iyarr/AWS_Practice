@@ -4,6 +4,12 @@ resource "aws_iam_policy" "logs" {
   policy      = data.aws_iam_policy_document.logs.json
 }
 
+resource "aws_iam_policy" "lambda_fullaccess" {
+  name = "${var.prefix}lambda_policy"
+  description = "policy for lambda"
+  policy = data.aws_iam_policy_document.lambda_fullaccess.json
+}
+
 resource "aws_iam_role_policy_attachment" "logs" {
   role       = aws_iam_role.default.name
   policy_arn = aws_iam_policy.logs.arn
