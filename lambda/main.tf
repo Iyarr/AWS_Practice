@@ -7,7 +7,7 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
-  filename         = "index.js"
+  filename         = "lambda/index.js"
 
   logging_config {
     log_group = aws_cloudwatch_log_group.default.name
