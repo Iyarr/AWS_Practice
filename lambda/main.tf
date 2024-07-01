@@ -19,7 +19,7 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
-  source_code_hash = data.archive_file.zip.output_base64sha256
+  s3_bucket = aws_s3_bucket.app.bucket
 
   logging_config {
     log_group = aws_cloudwatch_log_group.default.name
