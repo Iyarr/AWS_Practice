@@ -20,6 +20,7 @@ resource "aws_lambda_function" "hello_lambda" {
   handler          = "index.handler"
   runtime          = "nodejs20.x"
   s3_bucket = aws_s3_bucket.app.bucket
+  s3_key = "build_output/output.zip"
 
   logging_config {
     log_group = aws_cloudwatch_log_group.default.name
