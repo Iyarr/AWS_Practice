@@ -13,6 +13,15 @@ variable "region" {
   sensitive = true
 }
 
+variable "github_pat" {
+  type = string
+  sensitive = true
+}
+
+variable "github_repo" {
+  type = string
+}
+
 variable "lambda_function_name" {
   default = "HelloLambdaFunction"
   type = string
