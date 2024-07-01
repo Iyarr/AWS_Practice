@@ -1,7 +1,7 @@
 data "archive_file" "init_zip" {
   type        = "zip"
   output_path = "lambda.zip"
-  source_dir  = "${path.module}/index.js"
+  source_file  = "${path.module}/index.js"
 }
 
 resource "aws_s3_bucket" "app" {
