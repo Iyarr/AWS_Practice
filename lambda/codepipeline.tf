@@ -1,3 +1,8 @@
+resource "aws_codestarconnections_connection" "github" {
+  name = "${var.prefix}-github-connection"
+  provider_type = "GitHub"
+}
+
 resource "aws_codepipeline" "pipeline" {
   name     = "${var.prefix}pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
@@ -10,13 +15,13 @@ resource "aws_codepipeline" "pipeline" {
       category         = "Source"
       owner            = "AWS"
       provider         = "GitHub"
-      version          = "1"
+      version          = "2"
       output_artifacts = ["source_output"]
 
       configuration = {
-        Owner      = "iyarr"
-        Repo       = var.github_repo
-        Branch     = "main"
+        ConnectionArn        = aws_codestarconnections_connection.github.arn
+        FullRepositoryId     = var.github_repo
+        BranchName           = "master"
       }
     }
   }
