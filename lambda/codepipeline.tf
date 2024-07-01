@@ -104,7 +104,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
     ]
 
     resources = [
-      aws_s3_bucket.codepipeline_bucket.arn,
+      aws_s3_bucket.app.arn,
       "${aws_s3_bucket.app.arn}/*"
     ]
   }
