@@ -1,5 +1,5 @@
 resource "aws_codestarconnections_connection" "github" {
-  name = "${var.prefix}-github-connection"
+  name = "${var.prefix}github_connection"
   provider_type = "GitHub"
 }
 
@@ -19,9 +19,10 @@ resource "aws_codepipeline" "pipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        ConnectionArn        = aws_codestarconnections_connection.github.arn
-        FullRepositoryId     = var.github_repo
-        BranchName           = "master"
+        Owner      = "iyarr"
+        Repo       = var.github_repo
+        Branch     = "main"
+        OAuthToken = var.github_pat
       }
     }
   }
