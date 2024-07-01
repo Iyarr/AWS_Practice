@@ -18,8 +18,8 @@ phases:
       - echo "Packaging the project..."
       - cp -r node_modules dist
       - cd dist
-      - zip -r output.zip .
+      - zip -r lambda.zip .
 
 artifacts:
   files:
-    - output.zip
+    - lambda.zip

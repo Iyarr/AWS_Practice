@@ -24,3 +24,13 @@ GET メソッドリクエストを送り、レスポンスとして `Hello, Worl
 ## 参考にするサイト
 
 - [Terraform で API Gateway + Lambda の構成テンプレート](https://qiita.com/suzuki-navi/items/6a896a6577deaa858210)
+
+## lambda 関数の実装方法
+
+github のコードから lambda 関数にデプロイするための手順について書く
+
+## デプロイ手順
+
+- S3 バケットへのアップロード
+- CodeBuild でのビルド
+- Lambda 関数の作成

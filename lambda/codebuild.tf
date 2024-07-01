@@ -15,9 +15,7 @@ resource "aws_codebuild_project" "npm_build" {
   }
 
   source {
-    type            = "S3"
-    location        = "${aws_s3_bucket.app.bucket}/input.zip"
-    buildspec       = file("lambda/buildspec.yaml")
+    type = "CODEPIPELINE"
   }
 
   service_role = aws_iam_role.codebuild_service_role.arn
@@ -43,25 +41,4 @@ resource "aws_iam_role" "codebuild_service_role" {
 resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
   role       = aws_iam_role.codebuild_service_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
-  role       = aws_iam_role.codebuild_service_role.name
-  policy_arn = aws_iam_policy.lambda_fullaccess.arn
-}
-
-resource "aws_iam_policy" "lambda_fullaccess" {
-  name = "${var.prefix}lambda_policy"
-  description = "policy for lambda"
-  policy = data.aws_iam_policy_document.lambda_fullaccess.json
-}
-
-data "aws_iam_policy_document" "lambda_fullaccess" {
-  statement {
-    effect = "Allow"
-    
-    actions = ["lambda:*"]
-
-    resources = ["*"]
-  }
 }

@@ -9,13 +9,14 @@ resource "aws_codepipeline" "pipeline" {
       name             = "Source"
       category         = "Source"
       owner            = "AWS"
-      provider         = "S3"
+      provider         = "GitHub"
       version          = "1"
       output_artifacts = ["source_output"]
 
       configuration = {
-        S3Bucket    = aws_s3_bucket.app.bucket
-        S3ObjectKey = aws_s3_object.app.key
+        Owner      = "iyarr"
+        Repo       = var.github_repo
+        Branch     = "main"
       }
     }
   }
@@ -52,7 +53,7 @@ resource "aws_codepipeline" "pipeline" {
       configuration = {
         FunctionName  = aws_lambda_function.hello_lambda.function_name
         S3Bucket      = aws_s3_bucket.app.bucket
-        S3ObjectKey   = "build_output/output.zip"
+        S3ObjectKey   = "lambda.zip"
       }
     }
   }
