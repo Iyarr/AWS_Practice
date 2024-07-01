@@ -1,3 +1,9 @@
+data "archive_file" "init_zip" {
+  type        = "zip"
+  output_path = "lambda.zip"
+  source_dir  = "${path.module}/lambda"
+}
+
 resource "aws_s3_bucket" "app" {
   bucket = "iyarr-test-aws-practice-app"
 }
@@ -7,7 +13,7 @@ resource "aws_lambda_function" "hello_lambda" {
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
-  filename         = "lambda/index.js"
+  filename         = data.archive_file.init_zip.output_path
 
   logging_config {
     log_group = aws_cloudwatch_log_group.default.name
