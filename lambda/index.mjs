@@ -8,8 +8,8 @@ export const handler = async (event, context) => {
       body: JSON.stringify({
         message: "OK",
         event: event,
+        context: context,
       }),
-      context: context,
     });
   });
 };
