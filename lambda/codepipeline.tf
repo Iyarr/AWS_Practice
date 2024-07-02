@@ -53,7 +53,7 @@ resource "aws_cloudwatch_event_rule" "trigger_pipeline" {
     detail_type = ["Object Created"],
     detail = {
       bucket = {
-        name = ["${aws_s3_bucket.app.bucket.name}"]
+        name = [aws_s3_bucket.app.bucket]
       },
       object = {
         key = ["source.zip"]
