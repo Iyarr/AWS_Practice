@@ -108,10 +108,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
       "s3:PutObject",
     ]
 
-    resources = [
-      aws_s3_bucket.app.arn,
-      "${aws_s3_bucket.app.arn}/*"
-    ]
+    resources = ["*"]
   }
 
   statement {
