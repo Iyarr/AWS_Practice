@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
+    // these options are not read by esbuild
     "moduleResolution": "nodenext",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": false,
-    "target": "ES2020",
+    "target": "es2020",
     "module": "NodeNext",
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/build.js"],
   "exclude": ["node_modules"]
 }
