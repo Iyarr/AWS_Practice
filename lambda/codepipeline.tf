@@ -4,7 +4,7 @@ resource "aws_codepipeline" "pipeline" {
 
   # the build output file
   artifact_store {
-    type = "S3"
+    type = "NO_ARTIFACTS"
     location = aws_s3_bucket.app.bucket
   }
 
@@ -37,27 +37,9 @@ resource "aws_codepipeline" "pipeline" {
       provider         = "CodeBuild"
       version          = "1"
       input_artifacts  = ["source_output"]
-      output_artifacts = ["build_output"]
 
       configuration = {
         ProjectName = aws_codebuild_project.npm_build.name
-      }
-    }
-  }
-
-  stage {
-    name = "Deploy"
-
-    action {
-      name             = "Deploy"
-      category         = "Deploy"
-      owner            = "AWS"
-      provider         = "Lambda"
-      version          = "1"
-      input_artifacts  = ["build_output"]
-
-      configuration = {
-        FunctionName  = aws_lambda_function.hello_lambda.function_name
       }
     }
   }
@@ -67,22 +49,14 @@ resource "aws_cloudwatch_event_rule" "trigger_pipeline" {
   name                = "${var.prefix}trigger-pipeline-rule"
   description         = "Trigger CodePipeline execution based on CloudWatch Events"
   event_pattern = jsonencode({
-    "source": [
-      "aws.s3"
-    ],
-    "detail-type": [
-      "Object Created"
-    ],
-    "detail": {
-      "bucket": {
-        "name": [
-          aws_s3_bucket.app.bucket
-        ]
+    source = ["aws.s3"],
+    detail_type = ["Object Created"],
+    detail = {
+      bucket = {
+        name = [aws_s3_bucket.app.bucket]
       },
-      "object": {
-        "key": [
-          "source.zip"
-        ]
+      object = {
+        key = ["source.zip"]
       }
     }
   })

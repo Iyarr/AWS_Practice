@@ -4,7 +4,7 @@ resource "aws_codebuild_project" "npm_build" {
   build_timeout = "5"
 
   artifacts {
-    type = "CODEPIPELINE"
+    type = "NO_ARTIFACTS"
   }
 
   environment {
@@ -12,6 +12,11 @@ resource "aws_codebuild_project" "npm_build" {
     image                       = "aws/codebuild/standard:4.0"
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "LAMBDA_FUNCTION_NAME"
+      value = aws_lambda_function.hello_lambda.function_name
+    }
   }
 
   source {
@@ -36,6 +41,27 @@ resource "aws_iam_role" "codebuild_service_role" {
       }
     ]
   })
+}
+
+resource "aws_iam_policy" "lambda_update_policy" {
+  name       = "lambda_update_policy"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow",
+        Action   = [
+          "lambda:UpdateFunctionCode"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_update_policy_attachment" {
+  role       = aws_iam_role.codebuild_service_role.name
+  policy_arn = aws_iam_policy.lambda_update_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {

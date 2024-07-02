@@ -4,6 +4,7 @@ phases:
   install:
     runtime-versions:
       nodejs: 20.x
+
   pre_build:
     commands:
       - echo "Installing dependencies..."
@@ -19,6 +20,7 @@ phases:
       - cp -r node_modules dist
       - cd dist
       - zip -r lambda.zip .
+      - aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file lambda.zip
 
 artifacts:
   files:
