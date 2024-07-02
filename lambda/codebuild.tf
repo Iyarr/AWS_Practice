@@ -64,6 +64,11 @@ resource "aws_iam_role_policy_attachment" "lambda_update_policy_attachment" {
   policy_arn = aws_iam_policy.lambda_update_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "logs" {
+  role       = aws_iam_role.codebuild_service_role.name
+  policy_arn = aws_iam_policy.logs.arn
+}
+
 resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
   role       = aws_iam_role.codebuild_service_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
