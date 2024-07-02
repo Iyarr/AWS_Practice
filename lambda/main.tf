@@ -17,6 +17,8 @@ resource "aws_lambda_function" "hello_lambda" {
     system_log_level = "INFO"
   }
 
+  source_code_hash = data.archive_file.init_zip.output_base64sha256
+
   depends_on = [
     aws_iam_role_policy_attachment.logs
   ]
