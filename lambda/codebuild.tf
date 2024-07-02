@@ -60,6 +60,7 @@ resource "aws_iam_policy" "codebuild_policy" {
         Effect   = "Allow",
         Action   = [
           "lambda:UpdateFunctionCode",
+          "lambda:UpdateFunctionConfiguration",
           "codepipeline:PutJobSuccessResult",
           "codepipeline:PutJobFailureResult",
           "s3:GetObject",
