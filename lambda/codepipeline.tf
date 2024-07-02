@@ -4,7 +4,7 @@ resource "aws_codepipeline" "pipeline" {
 
   # the build output file
   artifact_store {
-    type = "NO_ARTIFACTS"
+    type = "S3"
     location = aws_s3_bucket.app.bucket
   }
 
