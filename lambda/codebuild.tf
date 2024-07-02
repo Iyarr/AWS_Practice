@@ -34,7 +34,7 @@ resource "aws_codebuild_project" "npm_build" {
 }
 
 resource "aws_iam_role" "codebuild_service_role" {
-  name = "codebuild_service_role"
+  name = "${var.prefix}codebuild_service_role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -51,7 +51,7 @@ resource "aws_iam_role" "codebuild_service_role" {
 }
 
 resource "aws_iam_policy" "codebuild_policy" {
-  name       = "lambda_update_policy"
+  name       = "${var.prefix}codebuild_policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

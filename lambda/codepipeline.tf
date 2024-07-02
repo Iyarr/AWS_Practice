@@ -124,7 +124,7 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 }
 
 resource "aws_iam_role" "events_role" {
-  name = "events-role"
+  name = "${var.prefix}events-role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [{
@@ -138,6 +138,7 @@ resource "aws_iam_role" "events_role" {
 }
 
 resource "aws_iam_policy" "events_full_access" {
+  name = "${var.prefix}events-full-access"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
