@@ -21,7 +21,7 @@ resource "aws_codebuild_project" "npm_build" {
 
   source {
     type = "CODEPIPELINE"
-    buildspec = file("${path.module}/buildspec.yml")
+    buildspec = file("${path.module}/buildspec.yaml")
   }
 
   service_role = aws_iam_role.codebuild_service_role.arn
