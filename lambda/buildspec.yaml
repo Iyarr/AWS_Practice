@@ -10,7 +10,7 @@ phases:
       - node -v
       - aws --version
       - rm package-lock.json
-      - npm install
+      - npm install --production
   build:
     commands:
       - echo "Building the project..."
