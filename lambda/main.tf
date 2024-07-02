@@ -4,10 +4,6 @@ data "archive_file" "init_zip" {
   source_file  = "${path.module}/index.js"
 }
 
-resource "aws_s3_bucket" "app" {
-  bucket = "iyarr-test-aws-practice-app"
-}
-
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "${var.prefix}${var.lambda_function_name}"
   role             = aws_iam_role.default.arn

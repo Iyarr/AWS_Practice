@@ -1,11 +1,12 @@
-resource "aws_codestarconnections_connection" "github" {
-  name = "${var.prefix}github_connection"
-  provider_type = "GitHub"
-}
-
 resource "aws_codepipeline" "pipeline" {
   name     = "${var.prefix}pipeline"
   role_arn = aws_iam_role.codepipeline_role.arn
+
+  # the build output file
+  artifact_store {
+    type = "S3"
+    location = aws_s3_bucket.app.bucket
+  }
 
   stage {
     name = "Source"
@@ -14,15 +15,14 @@ resource "aws_codepipeline" "pipeline" {
       name             = "Source"
       category         = "Source"
       owner            = "AWS"
-      provider         = "GitHub"
-      version          = "2"
+      provider         = "S3"
+      version          = "1"
       output_artifacts = ["source_output"]
 
       configuration = {
-        Owner      = "iyarr"
-        Repo       = var.github_repo
-        Branch     = "main"
-        OAuthToken = var.github_pat
+        S3Bucket = aws_s3_bucket.app.bucket
+        S3ObjectKey = aws_s3_object.source.key
+        PollForSourceChanges = true
       }
     }
   }
@@ -63,12 +63,38 @@ resource "aws_codepipeline" "pipeline" {
       }
     }
   }
+}
 
-  # the build output file
-  artifact_store {
-    type = "S3"
-    location = aws_s3_bucket.app.bucket
-  }
+resource "aws_cloudwatch_event_rule" "trigger_pipeline" {
+  name                = "${var.prefix}trigger-pipeline-rule"
+  description         = "Trigger CodePipeline execution based on CloudWatch Events"
+  event_pattern = jsonencode({
+    "source": [
+      "aws.s3"
+    ],
+    "detail-type": [
+      "Object Created"
+    ],
+    "detail": {
+      "bucket": {
+        "name": [
+          aws_s3_bucket.app.bucket
+        ]
+      },
+      "object": {
+        "key": [
+          "source.zip"
+        ]
+      }
+    }
+  })
+}
+
+resource "aws_cloudwatch_event_target" "pipeline_target" {
+  rule      = aws_cloudwatch_event_rule.trigger_pipeline.name
+  target_id = "codepipeline-target"
+  arn       = aws_codepipeline.pipeline.arn
+  role_arn  = aws_iam_role.events_role.arn
 }
 
 resource "aws_iam_role" "codepipeline_role" {
@@ -126,4 +152,23 @@ data "aws_iam_policy_document" "codepipeline_policy" {
 
     resources = ["*"]
   }
+}
+
+resource "aws_iam_role" "events_role" {
+  name = "events-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Service = "events.amazonaws.com"
+      },
+      Action = "sts:AssumeRole"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "events_policy_attachment" {
+  role       = aws_iam_role.events_role.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEventBridgeFullAccess"
 }
