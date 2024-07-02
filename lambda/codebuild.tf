@@ -81,11 +81,6 @@ resource "aws_iam_role_policy_attachment" "codebuild_logs" {
   policy_arn = aws_iam_policy.logs.arn
 }
 
-resource "aws_iam_role_policy_attachment" "codebuild_policy_attachment" {
-  role       = aws_iam_role.codebuild_service_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
-}
-
 resource "aws_cloudwatch_log_group" "codebuild_log_group" {
   name              = "${var.prefix}codebuild_log_group"
   retention_in_days = 3
