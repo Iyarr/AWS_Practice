@@ -2,6 +2,13 @@ resource "aws_s3_bucket" "app" {
   bucket = "iyarr-test-aws-practice-app"
 }
 
+resource "aws_s3_bucket_versioning" "versioning_example" {
+  bucket = aws_s3_bucket.app.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 data "archive_file" "source_zip" {
   type        = "zip"
   output_path = "source.zip"
