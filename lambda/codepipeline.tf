@@ -58,8 +58,6 @@ resource "aws_codepipeline" "pipeline" {
 
       configuration = {
         FunctionName  = aws_lambda_function.hello_lambda.function_name
-        S3Bucket      = aws_s3_bucket.app.bucket
-        S3ObjectKey   = "lambda.zip"
       }
     }
   }
