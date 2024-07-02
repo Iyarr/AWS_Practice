@@ -9,7 +9,7 @@ export const handler = async (event, context) => {
         message: "OK",
         event: event,
       }),
+      context: context,
     });
-    return;
   });
 };
