@@ -22,3 +22,16 @@ resource "aws_s3_object" "source" {
 
   depends_on = [ aws_cloudwatch_event_rule.trigger_pipeline ]
 }
+
+resource "null_resource" "default" {
+  triggers = {
+    bucket   = aws_s3_bucket.app.bucket
+  }
+  depends_on = [
+    aws_s3_bucket.app
+  ]
+  provisioner "local-exec" {
+    when = destroy
+    command = "aws s3 rm s3://${self.triggers.bucket} --recursive"
+  }
+}
