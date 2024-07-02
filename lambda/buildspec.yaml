@@ -21,7 +21,4 @@ phases:
       - cd dist
       - zip -r lambda.zip .
       - aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file lambda.zip
-
-artifacts:
-  files:
-    - lambda.zip
+      - echo "Deployment completed."
