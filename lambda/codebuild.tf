@@ -1,11 +1,13 @@
 resource "aws_codebuild_project" "npm_build" {
   name          = "${var.prefix}npm_build_project"
   description   = "CodeBuild project to build and deploy Lambda function"
+  service_role = aws_iam_role.codebuild_service_role.arn
   build_timeout = "5"
 
-  artifacts {
-    type = "NO_ARTIFACTS"
-    name = null
+  source {
+    type = "S3"
+    location = "${aws_s3_bucket.app.bucket}/source.zip"
+    buildspec = file("${path.module}/buildspec.yaml")
   }
 
   environment {
@@ -20,13 +22,9 @@ resource "aws_codebuild_project" "npm_build" {
     }
   }
 
-  source {
-    type = "S3"
-    location = "${aws_s3_bucket.app.bucket}/source.zip"
-    buildspec = file("${path.module}/buildspec.yaml")
+  artifacts {
+    type = "NO_ARTIFACTS"
   }
-
-  service_role = aws_iam_role.codebuild_service_role.arn
 
   logs_config {
     cloudwatch_logs {
