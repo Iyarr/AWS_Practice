@@ -4,7 +4,11 @@ phases:
   install:
     runtime-versions:
       nodejs: latest
-
+  prebuild:
+    commands:
+      - node -v
+      - pwd
+      - ls
   install:
     commands:
       - rm package-lock.json
@@ -15,7 +19,6 @@ phases:
       - npm run build
   post_build:
     commands:
-      - pwd
       - echo "Packaging the project..."
       - cp -r node_modules dist
       - cd dist
@@ -25,8 +28,7 @@ phases:
       - echo "Deployment completed."
 
     finally:
-      - pwd
       - echo "Cleaning up..."
       - cd ..
       - ls
-      - rm -rf dist package-lock.json package.json src node_modules
+      - ./*
