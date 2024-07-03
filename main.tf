@@ -24,3 +24,7 @@ provider "aws" {
 output "api_gateway_invoke_url" {
   value = module.api_gateway.invoke_url
 }
+
+output "s3_bucket_name" {
+  value = module.lambda.s3_bucket_name
+}
