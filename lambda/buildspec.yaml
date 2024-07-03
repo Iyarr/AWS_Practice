@@ -31,4 +31,4 @@ phases:
       - echo "Cleaning up..."
       - cd ..
       - ls
-      - ./*
+      - rm ./*
