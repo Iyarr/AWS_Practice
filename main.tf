@@ -2,8 +2,9 @@ module "lambda" {
   source = "./lambda"
   lambda_function_name = var.lambda_function_name
   prefix = var.prefix
-  github_pat = var.github_pat
-  github_repo = var.github_repo
+  region = var.region
+  aws_access_key_id = var.aws_access_key_id
+  aws_secret_access_key = var.aws_secret_access_key
 }
 
 module "api_gateway" {

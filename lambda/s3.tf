@@ -37,6 +37,11 @@ resource "null_resource" "default" {
   ]
   provisioner "local-exec" {
     when = destroy
+    environment = {
+      AWS_ACCESS_KEY_ID = var.aws_access_key_id
+      AWS_SECRET_ACCESS_KEY = var.aws_secret_access_key
+      AWS_DEFAULT_REGION = var.region
+    }
     command = "aws s3 rm s3://${self.triggers.bucket} --recursive"
   }
 }
