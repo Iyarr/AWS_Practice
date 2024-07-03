@@ -15,16 +15,18 @@ phases:
       - npm run build
   post_build:
     commands:
+      - pwd
       - echo "Packaging the project..."
       - cp -r node_modules dist
       - cd dist
+      - ls
       - zip -r lambda.zip .
       - aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://lambda.zip
       - echo "Deployment completed."
 
     finally:
+      - pwd
       - echo "Cleaning up..."
-      - ls
       - cd ..
       - ls
-      - rm -rf dist
+      - rm -rf dist package-lock.json package.json src node_modules
