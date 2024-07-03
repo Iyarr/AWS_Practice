@@ -5,6 +5,7 @@ resource "aws_codebuild_project" "npm_build" {
 
   artifacts {
     type = "NO_ARTIFACTS"
+    name = null
   }
 
   environment {
