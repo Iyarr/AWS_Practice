@@ -5,12 +5,10 @@ phases:
     runtime-versions:
       nodejs: latest
 
-  pre_build:
+  install:
     commands:
-      - node -v
-      - aws --version
       - rm package-lock.json
-      - npm install --production
+      - npm install
   build:
     commands:
       - echo "Building the project..."
@@ -23,3 +21,9 @@ phases:
       - zip -r lambda.zip .
       - aws lambda update-function-code --function-name $LAMBDA_FUNCTION_NAME --zip-file fileb://lambda.zip
       - echo "Deployment completed."
+
+    finally:
+      - echo "Cleaning up..."
+      - cd ..
+      - ls
+      - rm -rf dist
