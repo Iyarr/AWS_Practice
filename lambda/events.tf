@@ -7,9 +7,6 @@ resource "aws_cloudwatch_event_rule" "trigger_codebuild" {
     detail = {
       bucket = {
         name = [aws_s3_bucket.app.bucket]
-      },
-      object = {
-        key = ["source.zip"]
       }
     }
   })
