@@ -18,5 +18,5 @@ resource "aws_s3_object" "source" {
     create_before_destroy = true
   }
 
-  depends_on = [ aws_cloudwatch_event_rule.trigger_pipeline ]
+  depends_on = [ aws_cloudwatch_event_rule.trigger_codebuild ]
 }
