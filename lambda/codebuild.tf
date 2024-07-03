@@ -21,7 +21,7 @@ resource "aws_codebuild_project" "npm_build" {
 
   source {
     type = "S3"
-    location = "s3://${aws_s3_bucket.app.bucket}/source.zip"
+    location = "${aws_s3_bucket.app.bucket}/source.zip"
     buildspec = file("${path.module}/buildspec.yaml")
   }
 
