@@ -24,6 +24,7 @@ phases:
 
     finally:
       - echo "Cleaning up..."
+      - ls
       - cd ..
       - ls
       - rm -rf dist
