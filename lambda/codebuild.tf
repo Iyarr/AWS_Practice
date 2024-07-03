@@ -4,7 +4,7 @@ resource "aws_codebuild_project" "npm_build" {
   build_timeout = "5"
 
   artifacts {
-    type = "CODEPIPELINE"
+    type = "NO_ARTIFACTS"
   }
 
   environment {
@@ -20,7 +20,8 @@ resource "aws_codebuild_project" "npm_build" {
   }
 
   source {
-    type = "CODEPIPELINE"
+    type = "S3"
+    location = "s3://${aws_s3_bucket.app.bucket}/source.zip"
     buildspec = file("${path.module}/buildspec.yaml")
   }
 
@@ -61,8 +62,6 @@ resource "aws_iam_policy" "codebuild_policy" {
         Action   = [
           "lambda:UpdateFunctionCode",
           "lambda:UpdateFunctionConfiguration",
-          "codepipeline:PutJobSuccessResult",
-          "codepipeline:PutJobFailureResult",
           "s3:GetObject",
           "s3:GetObjectVersion",
           "s3:PutObject"
