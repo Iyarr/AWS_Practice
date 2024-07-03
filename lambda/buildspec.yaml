@@ -8,7 +8,7 @@ phases:
       - rm package-lock.json
       - npm install
 
-  prebuild:
+  pre_build:
     commands:
       - node -v
       - pwd
