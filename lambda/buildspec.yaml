@@ -4,19 +4,21 @@ phases:
   install:
     runtime-versions:
       nodejs: latest
+    commands:
+      - rm package-lock.json
+      - npm install
+
   prebuild:
     commands:
       - node -v
       - pwd
       - ls
-  install:
-    commands:
-      - rm package-lock.json
-      - npm install
+
   build:
     commands:
       - echo "Building the project..."
       - npm run build
+
   post_build:
     commands:
       - echo "Packaging the project..."
