@@ -1,9 +1,3 @@
-data "archive_file" "init_zip" {
-  type        = "zip"
-  output_path = "lambda.zip"
-  source_file  = "${path.module}/index.mjs"
-}
-
 resource "aws_lambda_function" "hello_lambda" {
   function_name    = "${var.prefix}${var.lambda_function_name}"
   role             = aws_iam_role.default.arn

@@ -9,16 +9,16 @@ resource "aws_s3_bucket_versioning" "versioning_example" {
   }
 }
 
-data "archive_file" "source_zip" {
+data "archive_file" "init_file" {
   type        = "zip"
   output_path = "source.zip"
-  source_dir  = "${path.module}/app"
+  source_file  = "${path.module}/index.mjs"
 }
 
 resource "aws_s3_object" "source" {
   bucket = aws_s3_bucket.app.bucket
   key    = "source.zip"
-  source = data.archive_file.source_zip.output_path
+  source = data.archive_file.init_file.output_path
 
   depends_on = [ aws_cloudwatch_event_rule.trigger_pipeline ]
 }
