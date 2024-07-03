@@ -1,6 +1,6 @@
-resource "aws_cloudwatch_event_rule" "trigger_pipeline" {
-  name                = "${var.prefix}trigger-pipeline-rule"
-  description         = "Trigger CodePipeline execution based on CloudWatch Events"
+resource "aws_cloudwatch_event_rule" "trigger_codebuild" {
+  name                = "${var.prefix}trigger-codebuild-rule"
+  description         = "Trigger CodeBuild execution based on CloudWatch Events"
   event_pattern = jsonencode({
     source = ["aws.s3"],
     detail_type = ["Object Created"],
@@ -16,21 +16,21 @@ resource "aws_cloudwatch_event_rule" "trigger_pipeline" {
 }
 
 resource "aws_cloudwatch_event_target" "codebuild_target" {
-  rule      = aws_cloudwatch_event_rule.trigger_pipeline.name
-  target_id = "codebuild_target"
+  rule      = aws_cloudwatch_event_rule.trigger_codebuild.name
+  target_id = "${var.prefix}codebuild_target"
   arn       = aws_codebuild_project.npm_build.arn
   role_arn  = aws_iam_role.events_role.arn
 }
 
-resource "aws_iam_role" "codepipeline_role" {
-  name               = "${var.prefix}role_for_codepipeline"
+resource "aws_iam_role" "codebuild_role" {
+  name               = "${var.prefix}role_for_codebuild"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Effect = "Allow"
         Principal = {
-          Service = "codepipeline.amazonaws.com"
+          Service = "codebuild.amazonaws.com"
         }
         Action = "sts:AssumeRole"
       }
