@@ -6,7 +6,11 @@ variable "prefix" {
   type = string
 }
 
-variable "rest_api_id" {
+variable "api_gateway_rest_api_root_id" {
+  type = string
+}
+
+variable "api_gateway_rest_api_id" {
   type = string
 }
 

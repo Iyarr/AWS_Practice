@@ -10,8 +10,9 @@ module "test" {
   assume_role_policies = local.assume_role_policies
   prefix = "${local.prefix}test_"
   s3_bucket = aws_s3_bucket.default.bucket
-  rest_api_id = aws_api_gateway_rest_api.root.id
   lambda_init_file_path = data.archive_file.lambda_init_file.output_path
+  api_gateway_rest_api_root_id = aws_api_gateway_rest_api.root.root_resource_id
+  api_gateway_rest_api_id = aws_api_gateway_rest_api.root.id
 }
 
 module "path0" {
@@ -19,8 +20,9 @@ module "path0" {
   assume_role_policies = local.assume_role_policies
   prefix = "${local.prefix}path0_"
   s3_bucket = aws_s3_bucket.default.bucket
-  rest_api_id = aws_api_gateway_rest_api.root.id
   lambda_init_file_path = data.archive_file.lambda_init_file.output_path
+  api_gateway_rest_api_root_id = aws_api_gateway_rest_api.root.root_resource_id
+  api_gateway_rest_api_id = aws_api_gateway_rest_api.root.id
 }
 
 resource "aws_s3_bucket" "default" {

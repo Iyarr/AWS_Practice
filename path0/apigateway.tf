@@ -1,18 +1,18 @@
 resource "aws_api_gateway_resource" "default" {
   path_part   = path.module
-  parent_id   = var.rest_api_id
-  rest_api_id = var.rest_api_id
+  parent_id   = var.api_gateway_rest_api_root_id
+  rest_api_id = var.api_gateway_rest_api_id
 }
 
 resource "aws_api_gateway_method" "get" {
-  rest_api_id   = var.rest_api_id
+  rest_api_id   = var.api_gateway_rest_api_id
   resource_id   = aws_api_gateway_resource.default.id
   http_method   = "GET"
   authorization = "NONE"
 }
 
 resource "aws_api_gateway_integration" "default" {
-  rest_api_id             = var.rest_api_id
+  rest_api_id             = var.api_gateway_rest_api_id
   resource_id             = aws_api_gateway_resource.default.id
   http_method             = aws_api_gateway_method.get.http_method
   integration_http_method = "POST"
