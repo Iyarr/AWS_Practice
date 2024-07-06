@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "root" {
-  name = "${var.prefix}api_gateway"
+  name = "${local.prefix}api_gateway"
   description = "This is a practice API"
 
   endpoint_configuration {
@@ -75,7 +75,7 @@ resource "aws_api_gateway_account" "default" {
 }
 
 resource "aws_iam_role" "api_gateway_account" {
-  name               = "${var.prefix}api_gateway_account_role"
+  name               = "${local.prefix}api_gateway_account_role"
   assume_role_policy = local.assume_role_policies.apigateway
 }
 
@@ -85,7 +85,7 @@ resource "aws_iam_role_policy_attachment" "api_gateway_account" {
 }
 
 resource "aws_iam_policy" "logs" {
-  name        = "${var.prefix}api_gateway_log_policy"
+  name        = "${local.prefix}api_gateway_log_policy"
   description = "this policy is not limited to any resource."
   policy      = data.aws_iam_policy_document.logs.json
 }
@@ -109,6 +109,6 @@ data "aws_iam_policy_document" "logs" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "${var.prefix}api_gateway_log_group"
+  name              = "${local.prefix}api_gateway_log_group"
   retention_in_days = 3
 }
