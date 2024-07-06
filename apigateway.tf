@@ -7,6 +7,23 @@ resource "aws_api_gateway_rest_api" "root" {
   }
 }
 
+resource "aws_api_gateway_rest_api_policy" "default" {
+  rest_api_id = aws_api_gateway_rest_api.root.id
+  policy      = data.aws_iam_policy_document.end_user.json
+}
+
+data "aws_iam_policy_document" "end_user" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "*"
+      identifiers = ["*"]
+    }
+    actions   = ["execute-api:Invoke"]
+    resources = ["${aws_api_gateway_rest_api.root.execution_arn}/*"]
+  }
+}
+
 resource "aws_api_gateway_deployment" "default" {
   rest_api_id = aws_api_gateway_rest_api.root.id
 
