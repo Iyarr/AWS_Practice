@@ -34,6 +34,10 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   eventbridge = true
 }
 
+output "unvoke_url" {
+  value = aws_api_gateway_deployment.default.invoke_url
+}
+
 data "archive_file" "lambda_init_file" {
   type        = "zip"
   output_path = "source.zip"
