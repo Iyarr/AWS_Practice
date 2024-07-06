@@ -76,7 +76,7 @@ resource "aws_api_gateway_account" "default" {
 
 resource "aws_iam_role" "api_gateway_account" {
   name               = "${var.prefix}api_gateway_account_role"
-  assume_role_policy = var.assume_role_policies.apigateway
+  assume_role_policy = local.assume_role_policies.apigateway
 }
 
 resource "aws_iam_role_policy_attachment" "api_gateway_account" {
@@ -111,8 +111,4 @@ data "aws_iam_policy_document" "logs" {
 resource "aws_cloudwatch_log_group" "default" {
   name              = "${var.prefix}api_gateway_log_group"
   retention_in_days = 3
-}
-
-output "api_gateway_rest_api_id" {
-  value = aws_api_gateway_rest_api.root.id
 }
