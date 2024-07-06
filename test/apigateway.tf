@@ -2,10 +2,6 @@ resource "aws_api_gateway_resource" "default" {
   path_part   = path.module
   parent_id   = var.rest_api_id
   rest_api_id = var.rest_api_id
-
-  lifecycle {
-    create_before_destroy = true
-  }
 }
 
 resource "aws_api_gateway_method" "get" {

@@ -1,2 +1,1 @@
-lambda_function_name = "HelloLambdaFunction"
-prefix = "aws_practice_"
+# Variables in this file in used all modules.

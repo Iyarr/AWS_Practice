@@ -1,5 +1,5 @@
 resource "aws_api_gateway_rest_api" "root" {
-  name = "${var.prefix}api_gateway"
+  name = "${local.prefix}api_gateway"
   description = "This is a practice API"
 
   endpoint_configuration {
@@ -15,10 +15,6 @@ resource "aws_api_gateway_rest_api_policy" "default" {
 data "aws_iam_policy_document" "end_user" {
   statement {
     effect = "Allow"
-    principals {
-      type = "*"
-      identifiers = ["*"]
-    }
     actions   = ["execute-api:Invoke"]
     resources = ["${aws_api_gateway_rest_api.root.execution_arn}/*"]
   }
@@ -29,7 +25,6 @@ resource "aws_api_gateway_deployment" "default" {
 
   triggers = {
     redeployment = sha1(jsonencode([
-      aws_api_gateway_rest_api.root.body,
       module.test.api_gateway_integration_id,
       module.path0.api_gateway_integration_id
     ]))
@@ -38,6 +33,8 @@ resource "aws_api_gateway_deployment" "default" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [ module.path0,module.test ]
 }
 
 resource "aws_api_gateway_stage" "default" {
@@ -78,8 +75,8 @@ resource "aws_api_gateway_account" "default" {
 }
 
 resource "aws_iam_role" "api_gateway_account" {
-  name               = "${var.prefix}api_gateway_account_role"
-  assume_role_policy = data.aws_iam_policy_document.logs.json
+  name               = "${local.prefix}api_gateway_account_role"
+  assume_role_policy = local.assume_role_policies.apigateway
 }
 
 resource "aws_iam_role_policy_attachment" "api_gateway_account" {
@@ -88,7 +85,7 @@ resource "aws_iam_role_policy_attachment" "api_gateway_account" {
 }
 
 resource "aws_iam_policy" "logs" {
-  name        = "${var.prefix}api_gateway_log_policy"
+  name        = "${local.prefix}api_gateway_log_policy"
   description = "this policy is not limited to any resource."
   policy      = data.aws_iam_policy_document.logs.json
 }
@@ -112,6 +109,6 @@ data "aws_iam_policy_document" "logs" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "${var.prefix}api_gateway_log_group"
+  name              = "${local.prefix}api_gateway_log_group"
   retention_in_days = 3
 }
