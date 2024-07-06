@@ -33,7 +33,7 @@ output "s3_bucket_name" {
 module "test" {
   source = "./test"
   assume_role_policies = local.assume_role_policies
-  prefix = "${var.prefix}test."
+  prefix = "${var.prefix}test_"
   s3_bucket = aws_s3_bucket.default.bucket
   rest_api_id = aws_api_gateway_rest_api.root.id
   lambda_init_file_path = data.archive_file.lambda_init_file.output_path
@@ -42,7 +42,7 @@ module "test" {
 module "path0" {
   source = "./path0"
   assume_role_policies = local.assume_role_policies
-  prefix = "${var.prefix}path0."
+  prefix = "${var.prefix}path0_"
   s3_bucket = aws_s3_bucket.default.bucket
   rest_api_id = aws_api_gateway_rest_api.root.id
   lambda_init_file_path = data.archive_file.lambda_init_file.output_path
