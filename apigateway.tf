@@ -57,16 +57,16 @@ resource "aws_api_gateway_method_settings" "default" {
 }
 
 resource "aws_api_gateway_account" "default" {
-  cloudwatch_role_arn = aws_iam_role.account.arn
+  cloudwatch_role_arn = aws_iam_role.api_gateway_account.arn
 }
 
-resource "aws_iam_role" "account" {
+resource "aws_iam_role" "api_gateway_account" {
   name               = "${var.prefix}api_gateway_account_role"
   assume_role_policy = data.aws_iam_policy_document.logs.json
 }
 
-resource "aws_iam_role_policy_attachment" "account" {
-  role       = aws_iam_role.account.name
+resource "aws_iam_role_policy_attachment" "api_gateway_account" {
+  role       = aws_iam_role.api_gateway_account.name
   policy_arn = aws_iam_policy.logs.arn
 }
 
@@ -95,6 +95,6 @@ data "aws_iam_policy_document" "logs" {
 }
 
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "${var.prefix}api_gateway.log_group"
+  name              = "${var.prefix}api_gateway_log_group"
   retention_in_days = 3
 }
