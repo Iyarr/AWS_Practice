@@ -1,5 +1,5 @@
 resource "aws_lambda_function" "hello_lambda" {
-  function_name    = "${var.prefix}${var.lambda_function_name}"
+  function_name    = "${var.prefix}hello_lambda"
   role             = aws_iam_role.default.arn
   handler          = "index.handler"
   runtime          = "nodejs20.x"
