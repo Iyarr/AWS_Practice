@@ -33,19 +33,4 @@ variable "services" {
 
 variable "assume_role_policies" {
   type = map(string)
-  default = {
-    for service in ["lambda", "apigateway", "codebuild"] : service => 
-      jsonencode({
-      Version = "2012-10-17",
-      Statement = [
-        {
-          Effect = "Allow",
-          Principal = {
-            Service = "${service}.amazonaws.com"
-          },
-          Action = "sts:AssumeRole"
-        }
-      ]
-    })
-  }
 }

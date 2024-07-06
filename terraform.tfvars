@@ -1,17 +1,17 @@
 lambda_function_name = "HelloLambdaFunction"
 prefix = "aws_practice."
 assume_role_policies = {
-    for_each = ["lambda", "apigateway", "codebuild"]
-    ["${each.value}"] = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Effect = "Allow",
-        Principal = {
-          Service = "${each.value}.amazonaws.com"
-        },
-        Action = "sts:AssumeRole"
-      }
-    ]
-  })
-}
+    for service in ["lambda", "apigateway", "codebuild"] : service => 
+      jsonencode({
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Principal = {
+            Service = "${service}.amazonaws.com"
+          },
+          Action = "sts:AssumeRole"
+        }
+      ]
+    })
+  }
