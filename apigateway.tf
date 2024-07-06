@@ -42,7 +42,7 @@ resource "aws_api_gateway_stage" "default" {
     })
   }
 
-  depends_on = [ aws_api_gateway_account.account ]
+  depends_on = [ aws_api_gateway_account.default ]
 }
 
 resource "aws_api_gateway_method_settings" "default" {
