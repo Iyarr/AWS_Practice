@@ -24,13 +24,3 @@ variable "lambda_function_name" {
 variable "prefix" {
   type = string
 }
-
-# issues/90
-variable "services" {
-  type = set(string)
-  default = ["lambda", "apigateway", "codebuild"]
-}
-
-variable "assume_role_policies" {
-  type = map(string)
-}
