@@ -26,6 +26,25 @@ variable "prefix" {
 }
 
 # issues/90
+variable "services" {
+  type = set(string)
+  default = ["lambda", "apigateway", "codebuild"]
+}
+
 variable "assume_role_policies" {
   type = map(string)
+  default = {
+    for service in var.services : service => jsonencode({
+      Version = "2012-10-17",
+      Statement = [
+        {
+          Effect = "Allow",
+          Principal = {
+            Service = "${service}.amazonaws.com"
+          },
+          Action = "sts:AssumeRole"
+        }
+      ]
+    })
+  }
 }
