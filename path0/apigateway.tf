@@ -33,7 +33,7 @@ resource "aws_api_gateway_integration" "default" {
 
 resource "aws_iam_role" "api_gateway_integration" {
   name               = "${var.prefix}role_for_api_gateway_integration"
-  assume_role_policy = var.assume_role_policies.api_gateway
+  assume_role_policy = var.assume_role_policies.apigateway
 }
 
 resource "aws_iam_policy" "api_gateway_integration" {
