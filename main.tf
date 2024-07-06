@@ -28,3 +28,32 @@ output "api_gateway_invoke_url" {
 output "s3_bucket_name" {
   value = module.lambda.s3_bucket_name
 }
+
+# issues/90
+module "test" {
+  source = "./test"
+  assume_role_policies = var.assume_role_policies
+  prefix = "${var.prefix}test."
+  s3_bucket = aws_s3_bucket.default.bucket
+  rest_api_id = aws_api_gateway_rest_api.root.id
+  lambda_init_file_path = data.archive_file.lambda_init_file.output_path
+}
+
+module "path0" {
+  source = "./path0"
+  assume_role_policies = var.assume_role_policies
+  prefix = "${var.prefix}path0."
+  s3_bucket = aws_s3_bucket.default.bucket
+  rest_api_id = aws_api_gateway_rest_api.root.id
+  lambda_init_file_path = data.archive_file.lambda_init_file.output_path
+}
+
+resource "aws_s3_bucket" "default" {
+  bucket = var.s3_bucket_name
+}
+
+data "archive_file" "lambda_init_file" {
+  type        = "zip"
+  output_path = "source.zip"
+  source_file  = "index.mjs"
+}
