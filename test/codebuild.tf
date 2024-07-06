@@ -6,7 +6,7 @@ resource "aws_codebuild_project" "default" {
 
   source {
     type = "S3"
-    location = "${aws_s3_bucket.app.bucket}/${aws_s3_object.source.key}"
+    location = "${var.s3_bucket}/${aws_s3_object.source.key}"
     buildspec = file("buildspec.yaml")
   }
 

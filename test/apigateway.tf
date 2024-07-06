@@ -39,7 +39,7 @@ resource "aws_iam_role" "api_gateway_integration" {
 resource "aws_iam_policy" "api_gateway_integration" {
   name        = "${var.prefix}policy_for_api_gateway_integration"
   description = "Allow API Gateway to invoke Lambda"
-  policy = data.aws_iam_policy_document.integration.json
+  policy = data.aws_iam_policy_document.api_gateway_integration.json
 }
 
 resource "aws_iam_role_policy_attachment" "integration" {
@@ -51,6 +51,6 @@ data "aws_iam_policy_document" "api_gateway_integration" {
   statement {
     effect = "Allow"
     actions = ["lambda:InvokeFunction"]
-    resources = [aws_lambda_function.lambda.arn]
+    resources = [aws_lambda_function.default.arn]
   }
 }

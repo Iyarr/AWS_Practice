@@ -56,13 +56,13 @@ resource "aws_api_gateway_method_settings" "default" {
   }
 }
 
-resource "aws_api_gateway_account" "account" {
+resource "aws_api_gateway_account" "default" {
   cloudwatch_role_arn = aws_iam_role.account.arn
 }
 
 resource "aws_iam_role" "account" {
   name               = "${var.prefix}api_gateway_account_role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role_policy.json
+  assume_role_policy = data.aws_iam_policy_document.logs.json
 }
 
 resource "aws_iam_role_policy_attachment" "account" {
