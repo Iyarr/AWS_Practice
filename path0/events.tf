@@ -7,9 +7,9 @@ resource "aws_cloudwatch_event_rule" "trigger_codebuild" {
     detail = {
       bucket = {
         name = ["${var.s3_bucket}"]
-        detail = {
-          key = ["${var.s3_bucket}/${aws_s3_object.source.key}"]
-        }
+      }
+      object = {
+        key = ["${aws_s3_object.source.key}"]
       }
     }
   })

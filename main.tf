@@ -27,6 +27,11 @@ resource "aws_s3_bucket" "default" {
   bucket = var.s3_bucket_name
 }
 
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket      = aws_s3_bucket.default.id
+  eventbridge = true
+}
+
 data "archive_file" "lambda_init_file" {
   type        = "zip"
   output_path = "source.zip"
