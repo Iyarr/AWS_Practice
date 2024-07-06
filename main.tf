@@ -4,14 +4,6 @@ provider "aws" {
   region     = var.region
 }
 
-output "api_gateway_invoke_url" {
-  value = module.api_gateway.invoke_url
-}
-
-output "s3_bucket_name" {
-  value = module.lambda.s3_bucket_name
-}
-
 # issues/90
 module "test" {
   source = "./test"
