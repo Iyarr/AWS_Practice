@@ -6,6 +6,14 @@ resource "aws_lambda_function" "default" {
   s3_bucket = var.s3_bucket
   s3_key = aws_s3_object.source.key
 
+  environment {
+    variables = {
+      FIREBASE_PROJECT_ID = var.firebase.project_id
+      FIREBASE_CLIENT_EMAIL = var.firebase.client_email
+      FIREBASE_PRIVATE_KEY = var.firebase.private_key
+    }
+  }
+
   logging_config {
     log_group = aws_cloudwatch_log_group.lambda_log_group.name
     log_format = "JSON"

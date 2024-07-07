@@ -13,6 +13,11 @@ module "test" {
   lambda_init_file_path = data.archive_file.lambda_init_file.output_path
   api_gateway_rest_api_root_id = aws_api_gateway_rest_api.root.root_resource_id
   api_gateway_rest_api_id = aws_api_gateway_rest_api.root.id
+  firebase = {
+    project_id = var.firebase_project_id
+    client_email = var.firebase_client_email
+    private_key = var.firebase_private_key
+  }
 }
 
 module "path0" {
@@ -45,9 +50,9 @@ data "archive_file" "lambda_init_file" {
 }
 
 locals {
-  services = ["lambda", "events", "codebuild", "apigateway"]
   prefix = "aws_practice_"
 
+  services = ["lambda", "events", "codebuild", "apigateway"]
   assume_role_policies = {
     for service in local.services : service => jsonencode({
       Version = "2012-10-17",

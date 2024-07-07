@@ -21,3 +21,11 @@ variable "s3_bucket" {
 variable "lambda_init_file_path" {
   type = string
 }
+
+variable "firebase" {
+  type = object({
+    client_email = string
+    private_key = string
+    project_id = string
+  })
+}
