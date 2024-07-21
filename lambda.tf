@@ -16,7 +16,7 @@ resource "aws_lambda_function" "default" {
 }
 
 resource "aws_ecr_repository" "default" {
-  name = "${local.prefix}_ecr"
+  name = "${local.prefix}ecr"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
@@ -42,7 +42,6 @@ resource "null_resource" "image_push" {
 		}
   }
 }
-
 
 resource "aws_iam_role" "lambda" {
   name               = "${local.prefix}role_for_lambda"
