@@ -11,7 +11,6 @@ resource "aws_lambda_function" "default" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.logs,
 		null_resource.image_push
   ]
 }
@@ -47,7 +46,7 @@ resource "null_resource" "image_puah" {
 
 resource "aws_iam_role" "lambda" {
   name               = "${local.prefix}role_for_lambda"
-  assume_role_policy = var.assume_role_policies.lambda
+  assume_role_policy = local.assume_role_policies.lambda
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_execution_policy_attachment" {
