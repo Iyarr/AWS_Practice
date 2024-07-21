@@ -4,10 +4,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 5.35.0"
     }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "3.0.2"
-    }
   }
 }
 
@@ -15,10 +11,6 @@ provider "aws" {
   access_key = var.aws_access_key_id
   secret_key = var.aws_secret_access_key
   region     = var.region
-}
-
-provider "docker" {
-  host = "unix:///var/run/docker.sock"
 }
 
 # issues/90
