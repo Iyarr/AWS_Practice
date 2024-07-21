@@ -23,9 +23,8 @@ resource "aws_ecr_repository" "default" {
 }
 
 
-data "docker_registry_image" "ubuntu" {
+data "docker_registry_image" "node" {
   name = "node:slim"
-  keep_remotely = true
 }
 
 resource "docker_image" "node" {
