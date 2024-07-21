@@ -24,7 +24,7 @@ resource "aws_ecr_repository" "default" {
   }
 }
 
-resource "null_resource" "image_puah" {
+resource "null_resource" "image_push" {
   provisioner "local-exec" {
     command = <<BASH
 			aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $REPOSITORY_URL
