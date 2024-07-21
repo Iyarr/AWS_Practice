@@ -29,7 +29,7 @@ data "docker_registry_image" "node" {
 
 resource "docker_image" "node" {
   name          = "${aws_ecr_repository.default.repository_url}/init:latest"
-  pull_triggers = [data.docker_registry_image.node.digest]
+  pull_triggers = [data.docker_registry_image.node.sha256_digest]
 }
 
 resource "aws_iam_role" "lambda" {
