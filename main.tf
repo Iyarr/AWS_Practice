@@ -4,6 +4,10 @@ provider "aws" {
   region     = var.region
 }
 
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
+}
+
 # issues/90
 module "test" {
   source = "./test"
