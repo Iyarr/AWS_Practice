@@ -39,6 +39,12 @@ module "path0" {
   api_gateway_rest_api_id = aws_api_gateway_rest_api.root.id
 }
 
+module "ci" {
+  source = "./ci"
+  assume_role_policies = local.assume_role_policies
+  prefix = "${local.prefix}ci_"
+}
+ 
 resource "aws_s3_bucket" "default" {
   bucket = var.s3_bucket_name
 }
@@ -46,10 +52,6 @@ resource "aws_s3_bucket" "default" {
 resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket      = aws_s3_bucket.default.id
   eventbridge = true
-}
-
-output "unvoke_url" {
-  value = aws_api_gateway_deployment.default.invoke_url
 }
 
 data "archive_file" "lambda_init_file" {
