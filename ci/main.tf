@@ -36,16 +36,6 @@ resource "aws_dynamodb_table" "Users" {
     name = "id"
     type = "S"
   }
-
-  attribute {
-    name = "name"
-    type = "S"
-  }
-
-  attribute {
-    name = "email"
-    type = "S"
-  }
 }
 
 resource "aws_dynamodb_table" "Dogs" {
@@ -57,31 +47,6 @@ resource "aws_dynamodb_table" "Dogs" {
 
   attribute {
     name = "id"
-    type = "S"
-  }
-
-  attribute {
-    name = "name"
-    type = "S"
-  }
-
-  attribute {
-    name = "image_url"
-    type = "S"
-  }
-
-  attribute {
-    name = "gender"
-    type = "S"
-  }
-	
-  attribute {
-    name = "size"
-    type = "S"
-  }
-	
-  attribute {
-    name = "owner_id"
     type = "S"
   }
 }
