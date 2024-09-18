@@ -1,9 +1,14 @@
-variable "aws_access_key_id" {
+variable "AWS_ACCESS_KEY_ID" {
   type = string
   sensitive = true
 }
 
-variable "aws_secret_access_key" {
+variable "AWS_SECRET_ACCESS_KEY" {
+  type = string
+  sensitive = true
+}
+
+variable "AWS_REGION" {
   type = string
   sensitive = true
 }
@@ -19,15 +24,6 @@ variable "firebase_project_id" {
 }
 
 variable "firebase_client_email" {
-  type = string
-  sensitive = true
-}
-
-variable "s3_bucket_name" {
-  type = string
-}
-
-variable "region" {
   type = string
   sensitive = true
 }

@@ -11,56 +11,19 @@ Terraform における AWS のリソース管理をする
 ├── README.md
 ├── main.tf
 ├── variables.tf
-├── apigateway.tf
-├── terraform.tfvars
-├── index.mjs
+├── outputs.tf
 |
-├── test
-│  ├── apigateway.tf
-│  ├── codebuild.tf
-│  ├── lambda.tf
-│  └── variables.tf
-|
-├── path0
-│  ├── apigateway.tf
-│  ├── codebuild.tf
-│  ├── lambda.tf
-│  └── variables.tf
-|
-├── api_gateway
-|  ├── test
-│  │  ├── main.tf
-│  │  ├── data.tf
-│  │  ├── variables.tf
-│  │  ├── policies.tf
-|  |  └── outputs.tf
+├── ci
 │  ├── main.tf
-│  ├── data.tf
-│  ├── variables.tf
-│  ├── policies.tf
-|  └── outputs.tf
-└── lambda
-   ├── index.js
-   ├── main.tf
-   └── outputs.tf
+│  ├── outputs.tf
+│  └── variables.tf
+
 ```
 
 ### モジュールの分割方法
 
 - API のリクエストのパスの階層ごとにモジュールを分割する
 - リソースはなるべくモジュール内で完結させる
-
-### API Gateway
-
-### S3
-
-lambda 関数をデプロイする際の zip ファイルは、モジュールの階層構造に合わせる
-zip ファイルの名前は、`source.zip` とする
-
-### Lambda
-
-リクエストごとにどうやって Lmabda 関数を分割するかは未定
-少なくとも firebase のトークン認証の Lambda 関数は独立させる
 
 ## ネーミングルール
 
