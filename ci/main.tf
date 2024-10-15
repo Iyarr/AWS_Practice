@@ -24,8 +24,8 @@ data "aws_iam_policy_document" "dynamodb" {
 resource "aws_dynamodb_table" "Users" {
   name           = "${var.prefix}Users"
   billing_mode   = "PROVISIONED"
-  read_capacity  = 20
-  write_capacity = 20
+  read_capacity  = 1
+  write_capacity = 1
   hash_key       = "id"
 
   attribute {
@@ -37,8 +37,8 @@ resource "aws_dynamodb_table" "Users" {
 resource "aws_dynamodb_table" "Dogs" {
   name           = "${var.prefix}Dogs"
   billing_mode   = "PROVISIONED"
-  read_capacity  = 20
-  write_capacity = 20
+  read_capacity  = 1
+  write_capacity = 1
   hash_key       = "id"
 
   attribute {
@@ -55,16 +55,16 @@ resource "aws_dynamodb_table" "Dogs" {
     name               = "hostIdIndex"
     hash_key           = "hostId"
     projection_type    = "KEYS_ONLY"
-    read_capacity      = 20
-    write_capacity     = 20
+    read_capacity      = 1
+    write_capacity     = 1
   }
 }
 
 resource "aws_dynamodb_table" "UserAllows" {
   name          = "${var.prefix}UserAllows"
   billing_mode  = "PROVISIONED"
-  read_capacity = 20
-  write_capacity = 20
+  read_capacity = 1
+  write_capacity = 1
   hash_key = "id"
 
   attribute {
@@ -81,7 +81,7 @@ resource "aws_dynamodb_table" "UserAllows" {
     name               = "allowUserIdIndex"
     hash_key           = "allowUserId"
     projection_type    = "KEYS_ONLY"
-    read_capacity      = 20
-    write_capacity     = 20
+    read_capacity      = 1
+    write_capacity     = 1
   }
 }
